@@ -16,6 +16,25 @@ beta.sample <- function(x, index.family="sorensen", sites=10, samples=100){
 
 	# Create a matrix to save the results.
 	results.n<-as.data.frame(matrix(nrow=samples, ncol=3))
+	
+	# a function to subset the betapart object and avoid recalculation
+	# - this probably slows down very small datasets but recalc of the betapart core matrices is a big hit on others
+	subset.betapart.core <- function(bpc, rows){
+		bpc$data <- bpc$data[rows,]
+
+		bpc$shared <- bpc$shared[rows, rows]
+		bpc$not.shared <- bpc$not.shared[rows, rows]
+
+		bpc$sumSi <- sum(diag(bpc$shared)) # species by site richness
+	    bpc$St <- sum(colSums(bpc$data) > 0)  # regional species richness
+	    bpc$a <- bpc$sumSi - bpc$St            # multi site shared species term
+
+		bpc$sum.not.shared <- bpc$sum.not.shared[rows, rows]
+		bpc$max.not.shared <- bpc$max.not.shared[rows, rows]
+		bpc$min.not.shared 	<- bpc$min.not.shared [rows, rows]
+
+		return(bpc)
+	}
 
 	# Loop on the selected number of samples
 	for(i in 1:samples){
@@ -23,7 +42,7 @@ beta.sample <- function(x, index.family="sorensen", sites=10, samples=100){
   		# Take a sample of the dataset with the specified number of sites 
   		position <- as.vector(1:nrow(x$data))
   		sample.position <- sample(position, sites)
-  		x.sample <- x$data[sample.position, ]
+  		x.sample <- subset.betapart.core(x, sample.position)
   
   		# Compute the three indices for this sample and save in the results matrix
 		x.beta <- beta.multi(x.sample, index.family)	

@@ -16,6 +16,11 @@ beta.temp <- function(x, y, index.family="sorensen"){
 	# check x and y match
 	if(! identical(dim(x$data), dim(y$data)))
 		stop('The two data matrices do not have the same dimensions.')
+	if(! identical(rownames(x$data), rownames(y$data)))
+		stop('The two data matrices do not have the same site names.')
+	if(! identical(colnames(x$data), colnames(y$data)))
+		stop('The two data matrices do not have the same species names .')
+
 
 	# get differences between groups
 	ai<-apply(x$data &  y$data, 1, sum)

@@ -10,8 +10,8 @@ betapart.core <- function(x){
 	
 	# simple test for binary data
 	xvals <-  unique(as.vector(x))
-	if(! setequal(xvals, c(0,1)))
-    	stop("The table contains values other than 0 and 1: data should be presence/absence.",call.=TRUE)
+	if (any(!is.element(xvals, c(0, 1)))) 
+        stop("The table contains values other than 0 and 1: data should be presence/absence.", call. = TRUE)
 
 	shared <- x %*% t(x)
     not.shared <-  abs(sweep(shared, 2, diag(shared)))
