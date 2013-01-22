@@ -33,7 +33,7 @@ The function returns an object of class \code{betapart} with the following eleme
 Baselga, A. 2010. Partitioning the turnover and nestedness components of beta diversity. Global Ecology and Biogeography 19:134-143
 
 Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. 
-Global Ecology and Biogeography, in press
+Global Ecology and Biogeography 21, 1223-1232
 }
 
 \author{

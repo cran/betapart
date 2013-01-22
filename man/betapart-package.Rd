@@ -8,7 +8,9 @@
 \description{
 \pkg{betapart} allows computing pair-wise dissimilarities (distance matrices),
 multiple-site dissimilarities and temporal changes in comunity composition, 
-separating the turnover and nestedness components of beta diversity as described in Baselga (2010). 
+separating the turnover and nestedness components of beta diversity. 
+This framework has been also extended for functional beta diversity and for abundance-based dissimilarity 
+(Bray-Curtis index).
 }
 \details{
 The partitioning of beta diversity can be performed for two different families of indices: 
@@ -23,9 +25,13 @@ for computing many indices. The multiple-site values can be randomly sampled a s
 times for a specified number of sites using the function \command{beta.sample}. The aforementioned indices used for 
 assessing spatial patterns can also be used for measuring temporal changes in community composition with the 
 function \command{beta.temp}.
+This framework has been extended for functional beta diversity with commands \command{functional.betapart.core}, 
+\command{functional.beta.pair} and \command{functional.beta.multi}.
+Likewise, an analogous framework has been implemented for separating the two components of Bray-Curtis abundance-based 
+dissimilarity (balanced changes in abundance vs. abundance gradients) using command \command{bray.part}.
 }
 \author{
-Andrés Baselga and David Orme
+Andrés Baselga, David Orme and Sébastien Villeger
 
 Maintainer: Andrés Baselga <andres.baselga@usc.es>
 }
@@ -33,5 +39,12 @@ Maintainer: Andrés Baselga <andres.baselga@usc.es>
 Baselga, A. 2010. Partitioning the turnover and nestedness components of beta diversity. Global Ecology and Biogeography 19:134-143
 
 Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. 
-Global Ecology and Biogeography, in press
+Global Ecology and Biogeography 21, 1223-1232
+
+Villéger, S. Grenouillet, G., Brosse, S. in press. Decomposing functional beta-diversity reveals that low functional beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, DOI: 10.1111/geb.12021 
+
+Baselga, A. in press. Separating the two components of abundance-based dissimilarity: balanced changes in abundance vs. 
+abundance gradients. Methods in Ecology and Evolution, DOI: 10.1111/2041-210X.12029 
+
+
 }
