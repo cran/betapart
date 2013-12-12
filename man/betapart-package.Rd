@@ -6,11 +6,7 @@
 
 \title{Partitioning beta diversity into turnover and nestedness components}
 \description{
-\pkg{betapart} allows computing pair-wise dissimilarities (distance matrices),
-multiple-site dissimilarities and temporal changes in comunity composition, 
-separating the turnover and nestedness components of beta diversity. 
-This framework has been also extended for functional beta diversity and for abundance-based dissimilarity 
-(Bray-Curtis index).
+\pkg{betapart} allows computing pair-wise dissimilarities (distance matrices) and multiple-site dissimilarities, separating the turnover and nestedness-resultant components of taxonomic (incidence and abundance based), functional and phylogenetic beta diversity.
 }
 \details{
 The partitioning of beta diversity can be performed for two different families of indices: 
@@ -26,12 +22,13 @@ times for a specified number of sites using the function \command{beta.sample}. 
 assessing spatial patterns can also be used for measuring temporal changes in community composition with the 
 function \command{beta.temp}.
 This framework has been extended for functional beta diversity with commands \command{functional.betapart.core}, 
-\command{functional.beta.pair} and \command{functional.beta.multi}.
+\command{functional.beta.pair} and \command{functional.beta.multi}, and for phylogenetic beta diversity with commands \command{phylo.betapart.core}, 
+\command{phylo.beta.pair} and \command{phylo.beta.multi}.
 Likewise, an analogous framework has been implemented for separating the two components of Bray-Curtis abundance-based 
 dissimilarity (balanced changes in abundance vs. abundance gradients) using command \command{bray.part}.
 }
 \author{
-Andrés Baselga, David Orme and Sébastien Villeger
+Andrés Baselga, David Orme, Sébastien Villeger, Julien De Bortoli and Fabien Leprieur
 
 Maintainer: Andrés Baselga <andres.baselga@usc.es>
 }
@@ -41,10 +38,15 @@ Baselga, A. 2010. Partitioning the turnover and nestedness components of beta di
 Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. 
 Global Ecology and Biogeography 21, 1223-1232
 
-Villéger, S. Grenouillet, G., Brosse, S. in press. Decomposing functional beta-diversity reveals that low functional beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, DOI: 10.1111/geb.12021 
+Baselga, A. 2013. Separating the two components of abundance-based dissimilarity: balanced changes in abundance vs. 
+abundance gradients. Methods in Ecology and Evolution, 4: 552-557
 
-Baselga, A. in press. Separating the two components of abundance-based dissimilarity: balanced changes in abundance vs. 
-abundance gradients. Methods in Ecology and Evolution, DOI: 10.1111/2041-210X.12029 
+Baselga A, Orme CDL. 2012. betapart: an R package for the study of beta diversity. Methods Ecol. Evol. 3: 808-812 
 
+Leprieur F, Albouy C, De Bortoli J, Cowman PF, Belwood DR, Mouillot D. 2012. Quantifying phylogenetic beta diversity: 
+distinguishing between "true" turnover of lineages and phylogenetic diversity gradients. PLoS One 7(8): e42760 
+
+Villéger, S. Grenouillet, G., Brosse, S. 2013. Decomposing functional beta-diversity reveals that low functional 
+beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, 22: 671-681
 
 }

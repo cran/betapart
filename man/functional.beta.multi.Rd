@@ -48,7 +48,8 @@ Villéger S., Novack-Gottshal P. & Mouillot D. 2011. The multidimensionality of 
 Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. 
 Global Ecology and Biogeography 21, 1223-1232
 
-Villéger, S. Grenouillet, G., Brosse, S. in press. Decomposing functional beta-diversity reveals that low functional beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, DOI: 10.1111/geb.12021
+Villéger, S. Grenouillet, G., Brosse, S. 2013. Decomposing functional beta-diversity reveals that low functional 
+beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, 22: 671-681
 }
 
 \author{
@@ -73,16 +74,19 @@ comm.test["D",c(2,4,7,9)]<-1
 plot(5,5,xlim=c(0,6), ylim=c(0,6), type="n", xlab="Trait 1",ylab="Trait 2")
 points(traits.test[,1],traits.test[,2], pch=21,cex=1.5,bg="black")
 rect(1,1,4,4, col="#458B0050", border="#458B00") ; text(2.5,2.5,"B",col="#458B00",cex=1.5)	
-polygon(c(2,1,3,4), c(1,2,5,4), col="#DA70D650", border="#DA70D6") ; text(2.5,3,"D",col="#DA70D6",cex=1.5)	
+polygon(c(2,1,3,4), c(1,2,5,4), col="#DA70D650", border="#DA70D6") ; 
+text(2.5,3,"D",col="#DA70D6",cex=1.5)	
 rect(1,1,2,2, col="#FF000050" , border="#FF0000") ; text(1.5,1.5,"A",col="#FF0000",cex=1.5)	
 rect(3,3,5,5, col="#1E90FF50", border="#1E90FF") ; text(4,4.2,"C",col="#1E90FF",cex=1.5)	
 
 test.multi<-functional.beta.multi(x=comm.test, traits=traits.test, index.family = "jaccard" )
 test.multi
 
-test.multi.ABC<-functional.beta.multi(x=comm.test[c("A","B","C"),], traits=traits.test, index.family = "jaccard" )
+test.multi.ABC<-functional.beta.multi(x=comm.test[c("A","B","C"),], traits=traits.test, 
+index.family = "jaccard" )
 test.multi.ABC
 
-test.multi.ABD<-functional.beta.multi(x=comm.test[c("A","B","D"),], traits=traits.test, index.family = "jaccard" )
+test.multi.ABD<-functional.beta.multi(x=comm.test[c("A","B","D"),], traits=traits.test, 
+index.family = "jaccard" )
 test.multi.ABD
 }
