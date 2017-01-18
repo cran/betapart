@@ -1,4 +1,4 @@
-\name{functional.betapart.core}
+﻿\name{functional.betapart.core}
 \alias{functional.betapart.core}
 \encoding{utf8}
 

@@ -1,4 +1,4 @@
-\name{beta.temp}
+﻿\name{beta.temp}
 \alias{beta.temp}
 \encoding{utf8}
 

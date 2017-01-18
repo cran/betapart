@@ -2,6 +2,8 @@
 exportPattern(".")
 
 # Import required packages
+importFrom("stats", "as.dist", "sd")
+importFrom("utils", "combn", "setTxtProgressBar", "txtProgressBar", "write.table")
 importFrom(geometry, convhulln)
 importFrom(rcdd, d2q, q2d, redundant, scdd)
 importFrom(ape, drop.tip, is.rooted, read.tree)

@@ -1,4 +1,4 @@
-\name{phylo.beta.pair}
+﻿\name{phylo.beta.pair}
 \alias{phylo.beta.pair}
 \encoding{utf8}
 

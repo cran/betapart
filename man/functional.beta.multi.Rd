@@ -1,4 +1,4 @@
-\name{functional.beta.multi}
+﻿\name{functional.beta.multi}
 \alias{functional.beta.multi}
 \encoding{utf8}
 

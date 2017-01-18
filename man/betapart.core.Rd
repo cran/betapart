@@ -1,4 +1,4 @@
-\name{betapart.core}
+﻿\name{betapart.core}
 \alias{betapart.core}
 \encoding{utf8}
 

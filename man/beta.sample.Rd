@@ -1,4 +1,4 @@
-\name{beta.sample}
+﻿\name{beta.sample}
 \alias{beta.sample}
 \encoding{utf8}
 
@@ -10,7 +10,7 @@ Resamples the 3 multiple-site dissimilarities (turnover, nestedness-resultant fr
 beta diversity) for a subset of sites of the original data frame.
 }
 \usage{
-beta.sample(x, index.family="sorensen", sites=10, samples=100)
+beta.sample(x, index.family="sorensen", sites = nrow(x), samples = 1)
 }
 
 \arguments{

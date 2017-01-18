@@ -1,4 +1,4 @@
-\name{beta.multi}
+﻿\name{beta.multi}
 \alias{beta.multi}
 \encoding{utf8}
 
