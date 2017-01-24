@@ -1,6 +1,6 @@
-﻿\name{beta.pair}
-\alias{beta.pair}
 \encoding{utf8}
+\name{beta.pair}
+\alias{beta.pair}
 
 \title{
 Incidence-based pair-wise dissimilarities
@@ -37,10 +37,10 @@ Baselga, A. 2010. Partitioning the turnover and nestedness components of beta di
 
 Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. Global Ecology and Biogeography 21, 1223-1232
 }
+
 \author{
 Andrés Baselga and David Orme
 }
-
 
 \seealso{
 \code{\link{beta.pair.abund}}, code{\link{beta.multi}}, \code{\link{beta.sample}}, \code{\link{betapart.core}}, \code{\link{beta.temp}}
@@ -49,4 +49,3 @@ Andrés Baselga and David Orme
 data(ceram.s)
 ceram.dist<-beta.pair(ceram.s, index.family="jac")
 }
-

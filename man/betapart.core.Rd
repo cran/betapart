@@ -1,6 +1,6 @@
-﻿\name{betapart.core}
-\alias{betapart.core}
 \encoding{utf8}
+\name{betapart.core}
+\alias{betapart.core}
 
 \title{
 Core calculations of betapart
@@ -53,4 +53,3 @@ ceram.multi.jac<-beta.multi(ceram.core.s, index.family="jac")
 ceram.multi.sor<-beta.multi(ceram.core.s, index.family="sor")
 
 }
-

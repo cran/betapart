@@ -1,6 +1,6 @@
-﻿\name{functional.beta.pair}
-\alias{functional.beta.pair}
 \encoding{utf8}
+\name{functional.beta.pair}
+\alias{functional.beta.pair}
 
 \title{
 Pair-wise functional dissimilarities
@@ -49,7 +49,6 @@ beta-diversity is driven by low functional turnover in European fish assemblages
 \author{
 Sébastien Villéger, Andrés Baselga and David Orme
 }
-
 
 \seealso{
 \code{\link{functional.beta.multi}}, \code{\link{functional.betapart.core}}, \code{\link{beta.pair}}

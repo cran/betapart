@@ -1,18 +1,18 @@
-beta.sample <- function(x, index.family="sorensen", sites=nrow(x), samples=1){
+beta.sample <- function(x, index.family="sorensen", sites=nrow(x$data), samples=1){
 		
-	# check sensible inputs
-	if(sites > nrow(x))
-		stop('More sites requested for sample than are in the dataset')
-	
-	# test for a valid index
-	index.family <- match.arg(index.family, c('jaccard','sorensen'))
-
 	# test for pre-existing betapart objects - validates data in x if not
 	if (! inherits(x, "betapart")){	
 		x <- betapart.core(x)
 	}
 	
 		pb <- txtProgressBar(min = 0, max = samples, style = 3)
+	
+	# check sensible inputs
+	if(sites > nrow(x$data))
+		stop('More sites requested for sample than are in the dataset')
+	
+	# test for a valid index
+	index.family <- match.arg(index.family, c('jaccard','sorensen'))
 
 	# Create a matrix to save the results.
 	results.n<-as.data.frame(matrix(nrow=samples, ncol=3))

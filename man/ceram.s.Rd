@@ -1,6 +1,6 @@
-﻿\name{ceram.s}
-\alias{ceram.s}
 \encoding{utf8}
+\name{ceram.s}
+\alias{ceram.s}
 \docType{data}
 \title{Cerambycidae from Southern European Countries}
 \description{

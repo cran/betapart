@@ -1,6 +1,6 @@
-﻿\name{bray.part}
-\alias{bray.part}
 \encoding{utf8}
+\name{bray.part}
+\alias{bray.part}
 
 \title{
 Partitioning pair-wise Bray-Curtis dissimilarities
@@ -33,18 +33,16 @@ Baselga, A. in press. Separating the two components of abundance-based dissimila
 abundance vs. abundance gradients. Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.12029
 }
 
-
 \author{
 Andrés Baselga
 }
 
-
 \seealso{
 \code{\link{beta.pair}}
 }
+
 \examples{
 require(vegan)
 data(BCI)
 BCI.matrices<-bray.part(BCI)
 }
-

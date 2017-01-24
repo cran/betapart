@@ -1,6 +1,6 @@
-﻿\name{beta.multi.abund}
-\alias{beta.multi.abund}
 \encoding{utf8}
+\name{beta.multi.abund}
+\alias{beta.multi.abund}
 
 \title{
 Abundance-based multiple-site dissimilarities
@@ -51,6 +51,3 @@ require(vegan)
 data(BCI)
 beta.multi.abund(BCI, index.family="bray")
 }
-
-
-

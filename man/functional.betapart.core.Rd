@@ -1,6 +1,6 @@
-﻿\name{functional.betapart.core}
-\alias{functional.betapart.core}
 \encoding{utf8}
+\name{functional.betapart.core}
+\alias{functional.betapart.core}
 
 \title{
 Core calculations of functional dissimilarities metrics

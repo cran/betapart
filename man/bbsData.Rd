@@ -1,4 +1,5 @@
-﻿\name{bbsData}
+\encoding{utf8}
+\name{bbsData}
 
 \alias{bbsData}
 
@@ -6,7 +7,6 @@
 
 \alias{bbs2000}
 
-\encoding{utf8}
 \docType{data}
 
 \title{BBS data by state for two timeslices}
@@ -38,9 +38,11 @@ version of the database downloaded in May 2009.
 \source{
 http://www.pwrc.usgs.gov/BBS/
 }
+
 \examples{
 data(bbsData)
 str(bbs1980)
 str(bbs2000)
 }
+
 \keyword{datasets}

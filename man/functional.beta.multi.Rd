@@ -1,6 +1,6 @@
-﻿\name{functional.beta.multi}
-\alias{functional.beta.multi}
 \encoding{utf8}
+\name{functional.beta.multi}
+\alias{functional.beta.multi}
 
 \title{
 Multiple-site functional dissimilarities
@@ -34,7 +34,6 @@ For \code{index.family="sorensen"} the three indices are:
 \item{beta.SIM}{ value of the functional turnover component, measured as Simpson derived functional dissimilarity}
 \item{beta.SNE}{ value of the functional nestedness component, measured as Nestedness-resultant fraction of Sorensen derived functional dissimilarity}
 \item{beta.SOR}{ value of the overall functional beta diversity, measured as Sorensen derived functional dissimilarity}
-
 
 For \code{index.family="jaccard"} the three indices are:
 \item{beta.JTU}{ value of the functional turnover component, measured as turnover fraction of Jaccard derived functional dissimilarity}

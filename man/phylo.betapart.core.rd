@@ -1,6 +1,6 @@
-﻿\name{phylo.betapart.core}
-\alias{phylo.betapart.core}
 \encoding{utf8}
+\name{phylo.betapart.core}
+\alias{phylo.betapart.core}
 
 \title{
 Core calculations of phylogenetic dissimilarities metrics

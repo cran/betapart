@@ -1,6 +1,6 @@
-﻿\name{beta.temp}
-\alias{beta.temp}
 \encoding{utf8}
+\name{beta.temp}
+\alias{beta.temp}
 
 \title{
 Temporal change in community composition

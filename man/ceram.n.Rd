@@ -1,5 +1,5 @@
-﻿\name{ceram.n}
 \encoding{utf8}
+\name{ceram.n}
 \docType{data}
 \alias{ceram.n}
 \title{Cerambycidae from Northern European Countries}
@@ -13,7 +13,5 @@
 \item{Danilevsky, M. L. 2007. A check-list of Longicorn Beetles (Coleoptera, Cerambycoidea) of Europe.Available at http://www.cerambycidae.net/}
 \item{Baselga, A. 2008. Determinants of species richness, endemism and turnover in European longhorn beetles. Ecography 31:263-271}
 }}
-
-
 
 

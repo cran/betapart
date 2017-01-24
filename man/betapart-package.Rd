@@ -1,7 +1,7 @@
-﻿\name{betapart}
+\encoding{utf8}
+\name{betapart}
 \alias{betapart-package}
 \alias{betapart}
-\encoding{utf8}
 \docType{package}
 
 \title{Partitioning beta diversity into turnover and nestedness components}

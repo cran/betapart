@@ -1,6 +1,6 @@
-﻿\name{beta.sample.abund}
-\alias{beta.sample.abund}
 \encoding{utf8}
+\name{beta.sample.abund}
+\alias{beta.sample.abund}
 
 \title{
 Resampling abundance-based multiple-site dissimilarity for n sites
@@ -19,7 +19,6 @@ beta.sample.abund(x, index.family="bray", sites = nrow(x), samples = 1)
 \item{sites}{ number of sites for which multiple-site dissimilarities will be computed. If not specified, default is all sites.}
 \item{samples}{ number of repetitions. If not specified, default is 1.}
 }
-
 
 \value{
 The function returns a list with a dataframe with the resampled 3 multiple-site dissimilarities 
@@ -46,7 +45,6 @@ Baselga, A. 2017. Partitioning abundance-based multiple-site dissimilarity into 
 Andrés Baselga
 }
 
-
 \seealso{
 \code{\link{beta.multi.abund}}, \code{\link{beta.sample}}
 }
@@ -55,4 +53,3 @@ require(vegan)
 data(BCI)
 beta.sample.abund(BCI, index.family="bray", sites=10, samples=100)
 }
-

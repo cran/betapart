@@ -1,17 +1,16 @@
-﻿\name{beta.multi}
-\alias{beta.multi}
 \encoding{utf8}
+\name{beta.multi}
+\alias{beta.multi}
 
-\title{
-Multiple-site dissimilarities
-}
+
+\title{Multiple-site dissimilarities}
+
 \description{
 Computes 3 multiple-site dissimilarities accounting for the spatial turnover 
 and the nestedness components of beta diversity, and the sum of both values
 }
-\usage{
-beta.multi(x, index.family="sorensen")
-}
+
+\usage{beta.multi(x, index.family="sorensen")}
 
 \arguments{
 \item{x}{ data frame, where rows are sites and columns are species. Alternatively \code{x} can 
@@ -53,6 +52,3 @@ Andrés Baselga and David Orme
 data(ceram.s)
 ceram.beta<-beta.multi(ceram.s, index.family="sor")
 }
-
-
-

@@ -1,6 +1,6 @@
-﻿\name{betapart.core.abund}
-\alias{betapart.core.abund}
 \encoding{utf8}
+\name{betapart.core.abund}
+\alias{betapart.core.abund}
 
 \title{
 Core calculations of betapart for abundance-based dissimilarity measures
@@ -51,4 +51,3 @@ core.BCI<-betapart.core.abund(BCI)
 pair.BCI<-beta.pair.abund(core.BCI)
 multi.BCI<-beta.multi.abund(core.BCI)
 }
-
