@@ -7,7 +7,7 @@ Core calculations of betapart for abundance-based dissimilarity measures
 }
 \description{
 Computes the basic quantities needed for computing the abundance-based multiple-site 
-dissimilarity measuresc and pairwise dissimilarity matrices.
+dissimilarity measures and pairwise dissimilarity matrices.
 }
 \usage{
 betapart.core.abund(x)
@@ -19,7 +19,7 @@ betapart.core.abund(x)
 
 \value{
 The function returns an object of class \code{betapart.abund} with the following elements:
-\item{multiple.shared.abund}{ the multiple-site interesection component in terms of abundances (AM)}
+\item{multiple.shared.abund}{ the multiple-site intersection component in terms of abundances (AM)}
 \item{pair.shared.abund}{ a matrix containing the agreement in abundance between pairs of sites (A)}
 \item{min.not.shared.abund}{ a matrix containing the minimum disagreement in abundance between pairs of sites: min(B,C)}
 \item{max.not.shared.abund}{ a matrix containing the maximum disagreement in abundance between pairs of sites between pairs of sites: max(B,C)}
@@ -28,12 +28,12 @@ The function returns an object of class \code{betapart.abund} with the following
 
 \references{
 Baselga, A. 2013. Separating the two components of abundance-based dissimilarity: balanced changes in 
-abundance vs. abundance gradients. Methods in Ecology and Evolution 4: 552–557
+abundance vs. abundance gradients. Methods in Ecology and Evolution, 4: 552–557
 
 Legendre, P. 2014. Interpreting the replacement and richness difference components of beta diversity. 
 Global Ecology and Biogeography, 23: 1324–1334
 
-Baselga, A. 2017. Partitioning abundance-based multiple-site dissimilarity into components: balanced variation in abundance and abundance gradients. Methods in Ecology and Evolution, in press
+Baselga, A. 2017. Partitioning abundance-based multiple-site dissimilarity into components: balanced variation in abundance and abundance gradients. Methods in Ecology and Evolution, 8: 799-808
 }
 
 \author{

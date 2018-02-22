@@ -23,13 +23,13 @@ The function returns a list with the three multiple site dissimilarity values.
 
 For \code{index.family="sorensen"} the three indices are:
 \item{beta.SIM}{ value of the turnover component, measured as Simpson dissimilarity}
-\item{beta.SNE}{ value of the nestedness component, measured as Nestedness-resultant fraction of Sorensen dissimilarity}
+\item{beta.SNE}{ value of the nestedness component, measured as nestedness-resultant fraction of Sorensen dissimilarity}
 \item{beta.SOR}{ value of the overall beta diversity, measured as Sorensen dissimilarity}
 
 
 For \code{index.family="jaccard"} the three indices are:
 \item{beta.JTU}{ value of the turnover component, measured as turnover fraction of Jaccard dissimilarity}
-\item{beta.JNE}{ value of the nestedness component, measured as Nestedness-resultant fraction of Jaccard dissimilarity}
+\item{beta.JNE}{ value of the nestedness component, measured as nestedness-resultant fraction of Jaccard dissimilarity}
 \item{beta.JAC}{ value of the overall beta diversity, measured as Jaccard dissimilarity}
 }
 

@@ -1,10 +1,14 @@
-# Export all names
+## Export all names
 exportPattern(".")
 
-# Import required packages
-importFrom("stats", "as.dist", "sd")
+## Import required packages
+import(stats)
+import(graphics)
 importFrom("utils", "combn", "setTxtProgressBar", "txtProgressBar", "write.table")
 importFrom(geometry, convhulln)
 importFrom(rcdd, d2q, q2d, redundant, scdd)
 importFrom(ape, drop.tip, is.rooted, read.tree)
 importFrom(picante, node.age)
+
+## S3 methods
+S3method(plot, decay)

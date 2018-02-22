@@ -38,7 +38,7 @@ For \code{index.family="ruzicka"}:
 }
 
 \references{
-Baselga, A. 2017. Partitioning abundance-based multiple-site dissimilarity into components: balanced variation in abundance and abundance gradients. Methods in Ecology and Evolution, in press
+Baselga, A. 2017. Partitioning abundance-based multiple-site dissimilarity into components: balanced variation in abundance and abundance gradients. Methods in Ecology and Evolution 8: 799-808
 }
 
 \author{

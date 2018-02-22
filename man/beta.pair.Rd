@@ -30,7 +30,7 @@ For \code{index.family="sorensen"} the three matrices are:
 For \code{index.family="jaccard"} the three matrices are:
 \item{beta.jtu}{ \code{dist} dissimilarity matrix accounting for spatial turnover, measured as the turnover-fraction of Jaccard pair-wise dissimilarity}
 \item{beta.jne}{ \code{dist} object, dissimilarity matrix accounting for nestedness-resultant dissimilarity, measured as the nestedness-fraction of Jaccard pair-wise dissimilarity}
-\item{beta.jac}{ \code{dist} object, ddissimilarity matrix accounting for beta diversity, measured as Jaccard pair-wise dissimilarity (a monotonic transformation of beta diversity)}
+\item{beta.jac}{ \code{dist} object, dissimilarity matrix accounting for beta diversity, measured as Jaccard pair-wise dissimilarity (a monotonic transformation of beta diversity)}
 }
 \references{
 Baselga, A. 2010. Partitioning the turnover and nestedness components of beta diversity. Global Ecology and Biogeography 19:134-143

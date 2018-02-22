@@ -32,12 +32,12 @@ The function returns a list with the three multiple site functional dissimilarit
 
 For \code{index.family="sorensen"} the three indices are:
 \item{beta.SIM}{ value of the functional turnover component, measured as Simpson derived functional dissimilarity}
-\item{beta.SNE}{ value of the functional nestedness component, measured as Nestedness-resultant fraction of Sorensen derived functional dissimilarity}
+\item{beta.SNE}{ value of the functional nestedness component, measured as nestedness-resultant fraction of Sorensen derived functional dissimilarity}
 \item{beta.SOR}{ value of the overall functional beta diversity, measured as Sorensen derived functional dissimilarity}
 
 For \code{index.family="jaccard"} the three indices are:
 \item{beta.JTU}{ value of the functional turnover component, measured as turnover fraction of Jaccard derived functional dissimilarity}
-\item{beta.JNE}{ value of the functional nestedness component, measured as Nestedness-resultant fraction of Jaccard derived functional dissimilarity}
+\item{beta.JNE}{ value of the functional nestedness component, measured as nestedness-resultant fraction of Jaccard derived functional dissimilarity}
 \item{beta.JAC}{ value of the overall functional beta diversity, measured as Jaccard derived functional dissimilarity}
 }
 
