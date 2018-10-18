@@ -69,9 +69,9 @@ dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
 
 plot(spat.dist, dissim.BCI, ylim=c(0,1), xlim=c(0, max(spat.dist)))
 
-BCI.decay.exp<-decay.model(dissim.BCI, spat.dist, model.type="exp", perm=100)
+BCI.decay.exp<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="exp", perm=100)
 
-BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=100)
+BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="pow", perm=100)
 
 plot.decay(BCI.decay.exp, col=rgb(0,0,0,0.5))
 plot.decay(BCI.decay.exp, col="red", remove.dots=TRUE, add=TRUE)

@@ -58,5 +58,5 @@ dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
 
 BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=100)
 
-boot.coefs.decay(BCI.decay.pow, 100)
+boot.coefs.decay(BCI.decay.pow, 50)
 }

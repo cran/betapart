@@ -20,6 +20,9 @@ be a \code{functional.betapart} object derived from the \code{functional.betapar
 \item{traits}{ if \code{x} is not a \code{functional.betapart} object, a data frame, where rows are species and columns are functional space dimensions (i.e. quantitative traits or synthetic axes after PCoA). Number of species in each site must be strictly higher than number of dimensions.}
 \item{index.family}{ family of dissimilarity indices, partial match of \code{"sorensen"} or \code{"jaccard"}.}
 }
+%NEW
+\details{Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only availabe in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details.   
+} 
 
 \value{
 The function returns a list with three functional dissimilarity matrices.
@@ -37,13 +40,11 @@ For \code{index.family="jaccard"} the three matrices are:
 }
 
 \references{
-Villéger S., Novack-Gottshal P. & Mouillot D. 2011. The multidimensionality of the niche reveals functional diversity changes in benthic marine biotas across geological time. Ecology Letters. 14, 561–568
+Villéger S., Novack-Gottshal P. & Mouillot D. 2011. The multidimensionality of the niche reveals functional diversity changes in benthic marine biotas across geological time. Ecology Letters 14: 561-568
 
-Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. 
-Global Ecology and Biogeography 21, 1223-1232
+Baselga, A. 2012. The relationship between species replacement, dissimilarity derived from nestedness, and nestedness. Global Ecology and Biogeography 21: 1223-1232
 
-Villéger, S. Grenouillet, G., Brosse, S. 2013. Decomposing functional beta-diversity reveals that low functional 
-beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, 22: 671-681
+Villéger, S. Grenouillet, G., Brosse, S. 2013. Decomposing functional beta-diversity reveals that low functional beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography 22: 671–681
 }
 
 \author{

@@ -2,16 +2,31 @@ Package: betapart
 Type: Package
 Title: Partitioning Beta Diversity into Turnover and Nestedness
         Components
-Version: 1.5.0
-Date: 2018-02-22
-Author: Andres Baselga, David Orme, Sebastien Villeger, Julien De Bortoli and Fabien Leprieur
-Maintainer: Andres Baselga <andres.baselga@usc.es>
-Imports: ape, geometry, picante, rcdd
-Suggests: vegan
+Version: 1.5.1
+Date: 2018-10-17
+Authors@R: c(
+    person("Andres", "Baselga", email = "andres.baselga@usc.es", role = c("aut", "cre")),
+	person("David", "Orme", role = "aut"),
+	person("Sebastien", "Villeger", role = "aut"),
+	person("Julien", "De Bortoli", role = "aut"),
+	person("Fabien", "Leprieur", role = "aut"),
+	person("Maxime", "Logez", role = "ctb"),
+	person("Renato", "Henriques-Silva", role = "ctb")
+  )
+Imports: ape, fastmatch, geometry, picante, rcdd
+Suggests: doParallel, foreach, vegan
 Description: Functions to compute pair-wise dissimilarities (distance matrices) and multiple-site dissimilarities, separating the turnover and nestedness-resultant components of taxonomic (incidence and abundance based), functional and phylogenetic beta diversity.
 License: GPL (>= 2)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 NeedsCompilation: no
-Packaged: 2018-02-22 13:56:44 UTC; Andres
+Packaged: 2018-10-18 11:28:05 UTC; Andres
+Author: Andres Baselga [aut, cre],
+  David Orme [aut],
+  Sebastien Villeger [aut],
+  Julien De Bortoli [aut],
+  Fabien Leprieur [aut],
+  Maxime Logez [ctb],
+  Renato Henriques-Silva [ctb]
+Maintainer: Andres Baselga <andres.baselga@usc.es>
 Repository: CRAN
-Date/Publication: 2018-02-22 14:11:27 UTC
+Date/Publication: 2018-10-18 11:40:07 UTC
