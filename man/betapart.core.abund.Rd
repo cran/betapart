@@ -48,6 +48,4 @@ Andrés Baselga
 require(vegan)
 data(BCI)
 core.BCI<-betapart.core.abund(BCI)
-pair.BCI<-beta.pair.abund(core.BCI)
-multi.BCI<-beta.multi.abund(core.BCI)
 }

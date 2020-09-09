@@ -1,3 +1,11 @@
+# betapart 1.5.2
+
+## New features
+
+### Updated functional.betapart.core() to allow internal parallel computing
+### New function to customize parameters for the internal parallel computing :
+* `beta.para.control()`
+
 # betapart 1.5.1
 
 ## New features
@@ -13,7 +21,7 @@
 
 `betapart 1.5.0` includes three new functions:
 
-* `decay.model()` fits a negative-exponential or mower law function describing the decay of assemblage similarity with sptatial distance.
+* `decay.model()` fits a negative-exponential or power law function describing the decay of assemblage similarity with spatial distance.
 
 * `plot.decay()` allows plotting the curves fitted with `decay.model()`.
 

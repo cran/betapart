@@ -1,4 +1,4 @@
-\name{functional.betapart.core}
+﻿\name{functional.betapart.core}
 \alias{functional.betapart.core}
 \encoding{utf8}
 
@@ -11,8 +11,10 @@ and pairwise functional dissimilarity matrices. This version of the function now
 }
 
 \usage{
-functional.betapart.core(x, traits, multi=TRUE, warning.time=TRUE, return.details=FALSE,  
-fbc.step=FALSE, core.ident=NULL) 
+functional.betapart.core(x, traits, multi = TRUE, warning.time = TRUE, 
+						return.details = FALSE, fbc.step = FALSE, 
+						parallel = FALSE, 
+						opt.parallel = beta.para.control())
 }
 
 \arguments{
@@ -22,9 +24,11 @@ fbc.step=FALSE, core.ident=NULL)
 \item{multi}{ a logical value indicating whether basic quantities for multiple-site functional beta-diversity should be computed. See \code{Details}.}
 \item{warning.time}{ a logical value indicating whether computation of multiple-site dissimilarities would stop if number of dimensions exceeds 4 or if number of sites exceeds 10. If turn to \code{FALSE}, computation process can be tracked in the \code{step.fbc.txt} file, see \code{Details}.}
 \item{return.details}{ a logical value indicating whether volume and coordinates of vertices of convex hulls shaping each site and their intersections in the functional space should be returned.}
-\item{fbc.step}{ a logical value indicating whether the computation progress tracking file "step.fbc.txt" should be created; Setting it to \code{FALSE} will speed up the function.}
-\item{core.ident}{ computer core identifier to allow for external parallelization of this function (e.g., for null models),see \code{Examples}.}
+\item{fbc.step}{ a logical value indicating whether the computation progress tracking file "step.fbc.txt" should be created; Setting it to \code{FALSE} will speed up the function. It is automatically turn to \code{FALSE} when parallel is \code{TRUE}.}
+\item{parallel}{ a logical value indicating internal parallelization is used to compute pairwise dissimilarities, see \code{Examples}. If \code{multi} is set to \code{TRUE} parallelization will be turned-off.}
+\item{opt.parallel}{ a list of values to replace the default values returned by the function \code{\link{beta.para.control}}, to customize the cluster used for parallel computing. Defaults to an empty list.}
 }
+
 
 \value{
 The function returns an object of class \code{betapart} with the following elements:
@@ -45,7 +49,9 @@ The function returns an object of class \code{betapart} with the following eleme
 \details{ For multiple-site dissimilarities metrics (N>2 sites), the volume of the union of the N convex hulls is computed using the inclusion-exclusion principle (Villéger et al., 2011). It requires to compute the volume of all the intersections between 2 to N convex hulls. Intersection between k>2 convex hulls is computed as the intersection between the two convex hulls shaping intersections between the corresponding k-1 convex hulls, e.g. V(AnBnC)=V( (AnB)n(BnC) ). For N sites, computing multiple-site dissimilarity metrics thus requires computing 2^N-(N+1) pair-wise intersections between convex hulls in a multidimensional functional space.
 Computation time of	the intersection between two convex hulls increases with the number of dimensions (D) of the functional space. Therefore, to prevent from running very long computation process \code{warning.time} is set by default to stop the function if D>4 or N>10.
 
-If \code{fbc.step} is set to \code{TRUE}, computation progress can be tracked in the "step.fbc.txt" file written in the working directory. In the case of external parallelization, each core will write a unique computation progress tracking file "step.fbc_core.ident.txt" using the \code{core.ident} argument. This table shows proportion of steps completed for computing convex hull volume shaping each site ("FRi") and intersections between them ("intersection_k"). 
+If \code{fbc.step} is set to \code{TRUE}, computation progress can be tracked in the "step.fbc.txt" file written in the working directory. This table shows proportion of steps completed for computing convex hull volume shaping each site ("FRi") and intersections between them ("intersection_k"). This is only possible when computations are not performed in parallel, and this whatever the type of parallelization used (external or internal).  
+
+If \code{parallel} is set to \code{TRUE}, computation will be run though the creation of a cluster. This is interesting when beta diversity computation is long. When the number of sites increase and/or when the taxonomic richness is highly variable between sites, parallelization becomes more and more interesting. On small matrices, the running time could inflate due to the creation of the cluster and its management. 
 }
 
 \references{
@@ -69,7 +75,7 @@ Sébastien Villéger, Andrés Baselga, David Orme, Renato Henriques-Silva, Maxim
 \examples{
 ##### 4 communities in a 2D functional space (convex hulls are rectangles)
 traits.test<-cbind( c(1,1,1,2,2,3,3,4,4,5,5) , c(1,2,4,1,2,3,5,1,4,3,5) )
-	dimnames(traits.test)<-list(paste("sp",1:11,sep="") , c("Trait 1","Trait 2") ) 
+dimnames(traits.test)<-list(paste("sp",1:11,sep="") , c("Trait 1","Trait 2") ) 
 
 comm.test<-matrix(0,4,11,dimnames=list( c("A","B","C","D") , paste("sp",1:11,sep="") ) )
 comm.test["A",c(1,2,4,5)]<-1
@@ -87,26 +93,84 @@ rect(3,3,5,5, col="#1E90FF50", border="#1E90FF") ; text(4,4.2,"C",col="#1E90FF",
 
 
 test.core<-functional.betapart.core(x=comm.test, traits=traits.test, multi=TRUE, 
-return.details=FALSE)
+                                    return.details=FALSE)
 test.core
 
 # using functional.betapart.core to get details on intersections
 # when only pairwise dissimilarity is computed
 test.core.pair<-functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
-return.details=TRUE)
+                                         return.details=TRUE)
 test.core.pair
 
 # for multiple dissimilarity
 test.core.multi<-functional.betapart.core(x=comm.test, traits=traits.test, multi=TRUE, 
-return.details=TRUE)
+                                          return.details=TRUE)
 test.core.multi
+
 
 # using core outputs to compute pairwise and multiple functional dissimilarities
 functional.beta.pair(x=test.core.pair, index.family = "jaccard" )
 functional.beta.multi(x=test.core.multi, index.family = "jaccard" )
 
+\dontrun{
+## Not run: 
+##### using internal parallelisation to fasten pairiwse dissimilarity
+test.core.pair<- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+                                          return.details=FALSE, fbc.step = FALSE,
+                                          parallel = FALSE)
+                                          
+# by default it uses half of the cores and 1 task per run (this can be customised)
+# test.core.pairp <- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+#                                         return.details=FALSE, fbc.step = FALSE,
+#                                         parallel = TRUE)
 
-# Null model using parallel computing 
+# tou can set the number of core to use :
+test.core.pairp <- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+                                         return.details=FALSE, fbc.step = FALSE,
+                                         parallel = TRUE, opt.parallel = beta.para.control(nc = 2))
+all.equal(test.core.pair, test.core.pairp)
+
+# library(microbenchmark)
+# microbenchmark(serial = 
+#                  functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+#                                           return.details=FALSE, fbc.step = FALSE,
+#                                           parallel = FALSE),
+#                nc2 = 
+#                  functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+#                                           return.details=FALSE, fbc.step = FALSE,
+#                                           parallel = TRUE, 
+#                                           opt.parallel = beta.para.control(nc = 2)),
+#                nc4 =
+#                  functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+#                                           return.details=FALSE, fbc.step = FALSE,
+#                                           parallel = TRUE, 
+#                                           opt.parallel = beta.para.control(nc = 4))
+# )
+
+# If the number of species is very different among communities
+# load-balancing parallelisation could be very efficient
+# especially when the number of community is high
+test.core.pairp <- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+                                            return.details=FALSE, fbc.step = FALSE,
+                                            parallel = TRUE, 
+                                            opt.parallel = beta.para.control(nc = 2, LB = TRUE))
+
+# use you can use fork cluster (but not on Windows)
+#test.core.pairp <- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+#                                            return.details=FALSE, fbc.step=FALSE,
+#                                            parallel=TRUE, 
+#                                            opt.parallel=beta.para.control(nc=2, type="FORK"))
+
+# finally you can customise the number of task run at each time
+test.core.pairp <- functional.betapart.core(x=comm.test, traits=traits.test, multi=FALSE, 
+                                            return.details=FALSE, fbc.step = FALSE,
+                                            parallel = TRUE, 
+                                            opt.parallel = beta.para.control(nc = 2, size = 6))
+
+# using internal parallelisation is not always useful, especially on small data set
+# load balancing is very helpful when species richness are highly variable
+
+# Null model using 'external' parallel computing 
 
 # Example 1: pairwise functional beta diversity (functional.beta.pair)
 # Note that this is an example with a small number of samples and null model 
@@ -124,166 +188,130 @@ comm.test["D",c(2,4,7,9)]<-1
 set.seed(1)
 traits.test<-matrix(rnorm(11*3, mean=0, sd=1), 11, 3) 
 dimnames(traits.test)<-list(paste("sp", 1:11, sep="") , c("Trait 1","Trait 2", "Trait 3"))
-     
-# Required packages
-require(doParallel)
-require(picante)
-require(fastmatch)
-require(foreach)
 
-    
+# Required packages
+library(doParallel)
+library(picante)
+library(fastmatch)
+library(foreach)
+
+
 # define number of cores
 # Use parallel::detectCores() to determine number of cores available in your machine
 nc <- 2 
+
+# 4 cores would be better (nc <- 4)
 
 # create cluster
 cl <- parallel::makeCluster(nc)
 
 # register parallel backend
 registerDoParallel(cl)
-    
+
 # define number of permutations for the null model (the usual is 1000)
 # make sure that nperm/nc is a whole number so that all cores have the same number 
 # of permutations to work on
-nperm <- 10
-    
-# compute observed values for multiple functional dissimilarities
+nperm <- 100
+
 test.score <- functional.betapart.core(x = comm.test, traits = traits.test, 
-multi = FALSE, warning.time = FALSE, return.details = FALSE, 
-fbc.step = FALSE, core.ident = NULL)
-                                           
+                                       multi = FALSE, warning.time = FALSE, 
+									   return.details = FALSE, 
+                                       fbc.step = FALSE, 
+									   parallel = FALSE)
+
 obs.pair.func.dis <- functional.beta.pair(x = test.score, index.family = "sorensen")
 
-# number of possible pairs of sites
-pairs <- combn(nrow(comm.test), 2)
-
-# create strings for each pair of site
-pair_names <- NULL
-for (i in 1:ncol(pairs)){
-  pair_id <- paste(attr(obs.pair.func.dis$funct.beta.sim, "Labels")[pairs[1,i]],
-  attr(obs.pair.func.dis$funct.beta.sim, "Labels")[pairs[2,i]], sep="-")
-  pair_names<-c(pair_names, pair_id) 
-}
-
 # transform functional.beta.pair results into a matrix
-obs.pair.func.dis <- do.call(rbind, lapply(obs.pair.func.dis, function(x) c(x)))
+obs.pair.func.dis <- do.call(rbind, obs.pair.func.dis)
 
-# set names for each pair of site using the set of strings created previsouly
+# set names for each pair of site
+pair_names <- combn(rownames(comm.test), 2, FUN = paste, collapse = "_")
 colnames(obs.pair.func.dis) <- pair_names
 
 # export necessary variables and functions to the cluster of cores
-parallel::clusterExport(cl = cl, c("nperm", "nc", "comm.test", "traits.test"), 
-envir = environment())
-                                     
-null.pair.func.dis <- foreach::foreach(n = 1:nc, .combine = c, 
-.packages=c("picante","betapart","fastmatch")) \%dopar\% {
-    
-# number of tasks per core (i.e., permutations per core)
-nt <- nperm/nc
-     
-#create a list of lists where the results from "nt" permutations will be stored
-  null.pair.temp <- replicate(nt,list())
-  
-  # for each core "n" perform "nt" permutations
-  for (j in 1:nt){ 
-    
-    # randomize community with chosen null model
-    # for this particular example we used the "independent swap algorithm" 
-    # but the user can choose other types of permutation, or create it's own null model 
-    null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", 
-	iterations=1000)
-    
-    # execute functional.betapart.core function identifying each "n" core with the 
-	  # core.ident argument 
-    null.test.score <- try(functional.betapart.core(null.comm.test, 
-	  traits = traits.test, multi = FALSE, warning.time = FALSE, return.details = FALSE, 
-	  fbc.step = FALSE, core.ident = n), silent=TRUE)
-    
-    # in this artificial example there are a few combinations of species that the convex hull 
-	  # cannot be calculated due to 
-    # some odd geometric combination so we need to re-permute the community matrix 
-    while(inherits(null.test.score, "try-error")){
-      
-    null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", 
-	iterations=1000)
-    null.test.score <- try(functional.betapart.core(x = null.comm.test, 
-	traits = traits.test, multi = FALSE, 
-    warning.time = FALSE, return.details = FALSE, fbc.step = FALSE, 
-	core.ident = n), silent=TRUE)
-    }
-    
-    # compute the pairwise beta-diversity null values and input them in the temporary 
-	# result matrix
-    null.pair.temp[[j]] <- functional.beta.pair(x = null.test.score, 
-	index.family = "sorensen" )
-    
-  }
-  #retrieve the results from each core
-  null.pair.temp
+parallel::clusterExport(cl = cl, c("comm.test", "traits.test"),
+                        envir = environment())
+
+# creation of an iterator to run 1 comparaisons on each core at time
+it <- itertools::isplitIndices(nperm, chunkSize = 1)
+
+# parallel computation
+null.pair.func.dis <- foreach(n = it, .combine = c, 
+                              .packages=c("picante","betapart","fastmatch")) \%dopar\% {
+                                
+# it enables to adjust the number of permutations (nt) done on each run
+nt <- length(n)
+null.pair.temp <- vector(mode = "list", length = nt)
+                                
+# for each core "n" perform "nt" permutations
+for (j in 1:nt){ 
+
+# randomize community with chosen null model
+# for this particular example we used the "independent swap algorithm" 
+# but the user can choose other types of permutation, or create it's own null model 
+null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", 
+                                          iterations=1000)
+                                  
+# execute functional.betapart.core function identifying each "n" core with the 
+# core.ident argument 
+null.test.score <- try(functional.betapart.core(null.comm.test, traits = traits.test, 
+					   multi = FALSE, warning.time = FALSE, 
+					   return.details = FALSE, fbc.step = FALSE, 
+					   parallel = FALSE), silent=TRUE)
+
+# when using 'external' parallelisation it is necessary to set parralel to FALSE
+                                  
+# in this artificial example there are a few combinations of species that the convex hull 
+# cannot be calculated due to 
+# some odd geometric combination so we need to re-permute the community matrix 
+while(inherits(null.test.score, "try-error")){
+                                    
+null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", 
+                                  iterations=1000)
+null.test.score <- try(functional.betapart.core(x = null.comm.test, 
+		               traits = traits.test, multi = FALSE, 
+					   warning.time = FALSE, return.details = FALSE, 
+					   fbc.step = FALSE, parallel = FALSE), silent=TRUE)
+}
+
+# compute the pairwise beta-diversity null values and input them in the temporary 
+# result matrix
+res <- functional.beta.pair(x = null.test.score, index.family = "sorensen" )
+null.pair.temp[[j]] <- do.call(rbind, res)
+                                  
+}
+#retrieve the results from each core
+null.pair.temp
 }
 
 # stop cluster
 parallel::stopCluster(cl)
 
-# transform the results from each permutation into a matrix
-null.pair.func.dis <- lapply(null.pair.func.dis, function(x) do.call(rbind,
-lapply(x, function(x) c(x))))
 
-# compute the mean, standard deviation and p-values of dissimilary metrics
+# compute the mean, standard deviation and p-values of dissimilarity metrics
 # for each pair of site
 
 mean.null.pair.func <-matrix(numeric(),ncol = ncol(obs.pair.func.dis), 
-nrow = nrow(obs.pair.func.dis))
+                             nrow = nrow(obs.pair.func.dis))
 sd.null.pair.func <-matrix(numeric(),ncol = ncol(obs.pair.func.dis), 
-nrow = nrow(obs.pair.func.dis))
+                           nrow = nrow(obs.pair.func.dis))
 p.pair.func.dis<-matrix(numeric(),ncol = ncol(obs.pair.func.dis), 
-nrow = nrow(obs.pair.func.dis))
+                        nrow = nrow(obs.pair.func.dis))
 
 # for each one of the 3 null dissimilarity metrics (SIN, SNE and SOR) 
 for (j in 1:nrow(obs.pair.func.dis)){
-  
-  #for each pair of sites
-  for (i in 1:ncol(obs.pair.func.dis)){
-    
-# group the null values from each metric of each pair of site into into
-#	it's own matrix
-null.pair.temp <- do.call(rbind, lapply(null.pair.func.dis, `[`,j,i)) 
-    
-# compute mean of all null values
-mean.null.pair.func[j,i] <- mean(null.pair.temp)
-    
-# compute standard deviation of all null values
-sd.null.pair.func[j,i] <- sd(null.pair.temp)
-    
-# compute the p-values
-p.pair.func.dis[j,i] <-(length(which(obs.pair.func.dis[j,i]<null.pair.temp))+1)/nperm
-# the +1 is to take into account that the observed value is one of the possibilities
-  }
+  matnull <- sapply(null.pair.func.dis, function(x) x[j,])
+  mean.null.pair.func[j,] <- rowMeans(matnull)
+  sd.null.pair.func[j,] <- sqrt(rowSums((matnull-mean.null.pair.func[j,])^2)/(nperm-1))
+  p.pair.func.dis[j,] <- rowSums(matnull>=obs.pair.func.dis[j,]) 
+  p.pair.func.dis[j,] <- (pmin(p.pair.func.dis[j,], nperm-p.pair.func.dis[j,])+1)/(nperm+1)
+  # the +1 is to take into account that the observed value is one of the possibilities
 }
 
 # compute standardized effect sizes
 ses.pair.func.dis <- (obs.pair.func.dis - mean.null.pair.func)/sd.null.pair.func
 
-# result matrix
-result <- as.data.frame(matrix(numeric(), ncol = 9,nrow = ncol(obs.pair.func.dis),
-     dimnames = list(pair_names, c("obs.SIM","ses.SIM","p.SIM","obs.SNE",
-     "ses.SNE","p.SNE","obs.SOR","ses.SOR","p.SOR"))))
 
-result$obs.SIM <- obs.pair.func.dis[1,]
-result$obs.SNE <- obs.pair.func.dis[2,]
-result$obs.SOR <- obs.pair.func.dis[3,]
-
-result$ses.SIM <- ses.pair.func.dis[1,]
-result$ses.SNE <- ses.pair.func.dis[2,]
-result$ses.SOR <- ses.pair.func.dis[3,]
-
-result$p.SIM <- p.pair.func.dis[1,]
-result$p.SNE <- p.pair.func.dis[2,]
-result$p.SOR <- p.pair.func.dis[3,]
-
-result
-
-\dontrun{
 # Example 2: multiple functional beta diversity (functional.beta.multi)
 # Note that this is an example with a small number of samples and null model
 # permutations for illustration.
@@ -293,7 +321,7 @@ result
 ##### 4 communities in a 3D functional space
 
 comm.test<-matrix(0,4,11,dimnames=list( c("A","B","C","D"), 
-paste("sp", 1:11, sep = "")))
+                                        paste("sp", 1:11, sep = "")))
 comm.test["A",c(1,2,4,5)]<-1
 comm.test["B",c(1,3,8,9)]<-1
 comm.test["C",c(6,7,10,11)]<-1
@@ -302,7 +330,7 @@ comm.test["D",c(2,4,7,9)]<-1
 set.seed(1)
 traits.test<-matrix(rnorm(11*3, mean=0, sd=1), 11, 3) 
 dimnames(traits.test)<-list(paste("sp", 1:11, sep=""), 
-c("Trait 1","Trait 2", "Trait 3"))
+                            c("Trait 1","Trait 2", "Trait 3"))
 
 # Required packages
 require(doParallel)
@@ -314,72 +342,77 @@ require(foreach)
 # define number of cores
 # Use parallel::detectCores() to determine number of cores available in your machine
 nc <- 2 
-    
+
 # create cluster
 cl <- parallel::makeCluster(nc)
-    
+
 # register parallel backend 
 registerDoParallel(cl)
-    
+
 # define number of permutations for the null model (the usual is 1000)
 # make sure that nperm/nc is a whole number so that all cores have the same number 
 # of permutations to work on
 nperm <- 10
-    
+
 # compute observed values for multiple functional dissimilarities
 test.score <- functional.betapart.core(x = comm.test, traits = traits.test, 
-multi = TRUE, warning.time = FALSE, return.details = FALSE, fbc.step = FALSE, 
-core.ident = NULL)
-obs.multi.func.dis <- t(as.matrix(unlist(functional.beta.multi(x=test.score, 
-index.family = "sorensen"))))
-    
+                                       multi = TRUE, warning.time = FALSE, 
+									   return.details = FALSE, 
+									   fbc.step = FALSE, 
+                                       parallel = FALSE)
+obs.multi.func.dis <- do.call(cbind, functional.beta.multi(x=test.score, 
+                                                               index.family = "sorensen"))
+
 # export necessary variables and functions to the cluster of cores
-parallel::clusterExport(cl = cl, c("nperm", "nc", "comm.test", "traits.test"), 
-envir=environment())
-    
-null.multi.func.dis <- foreach::foreach(n = 1:nc, .combine = rbind, 
-.packages = c("picante","betapart","fastmatch")) \%dopar\% {
+parallel::clusterExport(cl = cl, c("comm.test", "traits.test"), 
+                        envir=environment())
+
+it <- itertools::isplitIndices(nperm, chunkSize = 1)
   
- # for each core, create temporary matrix to store 3 null multiple functional 
- # dissimilarity indices (SIN, SNE,SOR)
- null.multi.temp <- matrix(numeric(), ncol = 3, nrow = nperm/nc, 
- dimnames = list(NULL, c("funct.beta.SIM", "funct.beta.SNE", "funct.beta.SOR")))
-
- # number of tasks per core (i.e., permutations per core)
- nt <- nperm/nc
-
-      # for each core "n" perform "nt" permutations
-      for (j in 1:nt) { 
-  
-      # randomize community matrix with chosen null model (for this example 
-	  # we chose the "independent swap" algorithm) 
-      null.comm.test <- picante::randomizeMatrix(comm.test, 
-	  null.model="independentswap", iterations=1000)
-    
-      # execute functional.betapart.core function identifying each "n" core 
-      # with the core.ident argument for external parallelization, 
-      null.test.score <- try(functional.betapart.core.modif(x = null.comm.test, 
-	  traits = traits.test, 
-      multi = TRUE,  warning.time = FALSE, return.details = FALSE, fbc.step = FALSE, 
-	  core.ident = n), silent = TRUE)
-
-      # in this artificial example there are a few combinations of species
-	  # that the convex hull 
-      # cannot be calculated due to some odd geometric combination so we 
-	  # need to re-permute the community matrix 
-                        
-      while(inherits(null.test.score, "try-error")){
-      null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", 
-	  iterations=1000)
-      null.test.score <- try(functional.betapart.core(x = null.comm.test, 
-	  traits = traits.test, 
-	  multi = TRUE,  warning.time = FALSE, return.details = FALSE, fbc.step = FALSE, 
-	  core.ident = n), silent = TRUE)
-                        }    
-      # input null values in the temporary result matrix
-      null.multi.temp[j,] <- unlist(functional.beta.multi(x = null.test.score, 
-	  index.family = "sorensen"))
-      }
+null.multi.func.dis <- foreach(n = it, .combine = rbind, 
+                               .packages = c("picante","betapart","fastmatch")) \%dopar\% {
+                                 
+# for each core, create temporary matrix to store 3 null multiple functional 
+# dissimilarity indices (SIN, SNE,SOR)
+null.multi.temp <- matrix(numeric(), ncol = 3, nrow = length(n), 
+                          dimnames = list(NULL, c("funct.beta.SIM",
+						  "funct.beta.SNE", 
+						  "funct.beta.SOR")))
+                                 
+# number of tasks per core (i.e., permutations per core)
+nt <- length(n)
+                                 
+# for each core "n" perform "nt" permutations
+for (j in 1:nt) { 
+                                   
+# randomize community matrix with chosen null model (for this example 
+# we chose the "independent swap" algorithm) 
+null.comm.test <- picante::randomizeMatrix(comm.test, 
+                                           null.model="independentswap", iterations=1000)
+                                   
+# execute functional.betapart.core function identifying each "n" core 
+# with the core.ident argument for external parallelization, 
+null.test.score <- try(functional.betapart.core(x = null.comm.test, 
+                       traits = traits.test, multi = TRUE,  warning.time = FALSE, 
+					   return.details = FALSE, fbc.step = FALSE, 
+                       parallel = FALSE), silent = TRUE)
+                                   
+# in this artificial example there are a few combinations of species
+# that the convex hull 
+# cannot be calculated due to some odd geometric combination so we 
+# need to re-permute the community matrix 
+                                   
+while(inherits(null.test.score, "try-error")){
+null.comm.test <- randomizeMatrix(comm.test, null.model="independentswap", iterations=1000)
+null.test.score <- try(functional.betapart.core(x = null.comm.test, traits = traits.test, 
+                                                multi = TRUE,  warning.time = FALSE, 
+                                                return.details=FALSE, fbc.step=FALSE, 
+                                                parallel = FALSE), silent = TRUE)
+}    
+# input null values in the temporary result matrix
+null.multi.temp[j,] <- unlist(functional.beta.multi(x = null.test.score, 
+		                                            index.family = "sorensen"))
+}
 # recover results from each core
 null.multi.temp
 }
@@ -389,7 +422,7 @@ parallel::stopCluster(cl)
 
 # result matrix
 result <- matrix(numeric(), ncol = 3, nrow = 3, dimnames = list(c("obs","ses","p"), 
-colnames(obs.multi.func.dis)))
+                                                                colnames(obs.multi.func.dis)))
 
 # input observed values for the multiple functional dissimilarity indices (SIN, SNE,SOR)
 result[1,] = obs.multi.func.dis
@@ -397,18 +430,18 @@ result[1,] = obs.multi.func.dis
 # compute standardized effect sizes (ses) for the multiple functional
 # dissimilarity indices (SIN, SNE,SOR)
 result[2,] <- (obs.multi.func.dis-colMeans(null.multi.func.dis, na.rm=TRUE))/
-apply(null.multi.func.dis,2,sd, na.rm=TRUE)
+  apply(null.multi.func.dis,2, sd, na.rm=TRUE)
 
 # compute p-values for the multiple functional dissimilarity indices (SIN, SNE,SOR)
-# SIM
-result[3,1] <- (length(which(obs.multi.func.dis[1]<null.multi.func.dis[,1])) + 1)/nperm
-# SNE
-result[3,2] <- (length(which(obs.multi.func.dis[2]<null.multi.func.dis[,2])) + 1)/nperm
-# SOR 
-result[3,3] <- (length(which(obs.multi.func.dis[3]<null.multi.func.dis[,3])) + 1)/nperm
-# the +1 is to take into account that the observed value is one of the possibilities
-     
-result
-###     
+for (i in 1:3) {
+  result[3, i] <- sum(obs.multi.func.dis[i]<=null.multi.func.dis[,i])
+  result[3, i] <- (pmin(result[3, i], nperm - result[3, i]) + 1)/(nperm+1)
 }
+# the +1 is to take into account that the observed value is one of the possibilities
+
+result
+### 
+## End(Not run)    
+}
+
 }

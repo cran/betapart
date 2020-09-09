@@ -21,7 +21,7 @@ be a \code{functional.betapart} object derived from the \code{functional.betapar
 \item{index.family}{ family of dissimilarity indices, partial match of \code{"sorensen"} or \code{"jaccard"}.}
 }
 %NEW
-\details{Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only availabe in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details.   
+\details{Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only available in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details.   
 } 
 
 \value{

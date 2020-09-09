@@ -26,7 +26,7 @@ be a \code{functional.betapart} object derived from the \code{functional.betapar
 Computation time of	the intersection between two convex hulls increases with the number of dimensions (D) of the functional space. Therefore, to prevent from running very long computation process \code{warning.time} is set by default to stop the function if D>4 or N>10.
 Computation progress can be tracked in the "step.fbc.txt" file written in the working directory. This table shows proportion of steps completed for computing convex hull volume shaping each site ("FRi") and intersections between them ("intersection_k").
 %NEW
-Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only availabe in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details. 
+Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only available in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details. 
 }
 
 \value{

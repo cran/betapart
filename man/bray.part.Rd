@@ -29,8 +29,8 @@ between sites, measured as the Bray-Curtis index}
 }
 
 \references{
-Baselga, A. in press. Separating the two components of abundance-based dissimilarity: balanced changes in 
-abundance vs. abundance gradients. Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.12029
+Baselga, A. 2013. Separating the two components of abundance-based dissimilarity: balanced changes in abundance vs. abundance gradients. Methods in Ecology and Evolution 4: 552–557
+
 }
 
 \author{
