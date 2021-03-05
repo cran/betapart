@@ -31,7 +31,7 @@ The function returns a list with:
 \item{data}{ dataframe containing distances (spatial or other) and similarities (or dissimilarities).}
 \item{model}{ the fitted GLM.}
 \item{model.type}{  functional form of the model, either negative exponential or power law.}
-\item{y.type}{  similarities or dissimilarities.}
+\item{y.type}{  similarties or dissimilarities.}
 \item{pseudo.r.squared}{  similarties or dissimilarities.}
 \item{a.intercept}{  intercept of the model, i.e. similarity or dissimilarity at distance=0.}
 \item{b.slope}{  slope of the model, i.e. rate at which similarity decreases with distance, or dissimilarity 
@@ -44,7 +44,7 @@ Nekola, J.C. & McGill, B.J. 2014. Scale dependency in the functional form of the
 relationship. Ecography, 37, 309-320
 
 Gómez-Rodríguez, C. & Baselga, A. 2018. Variation among European beetle taxa in patterns of distance decay 
-of similarity suggests a major role of dispersal processes. Ecography 41: 1825–1834
+of similarity suggests a major role of dispersal processes. Ecography, in press
 }
 
 \author{
@@ -69,9 +69,9 @@ dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
 
 plot(spat.dist, dissim.BCI, ylim=c(0,1), xlim=c(0, max(spat.dist)))
 
-BCI.decay.exp<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="exp", perm=10)
+BCI.decay.exp<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="exp", perm=100)
 
-BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="pow", perm=10)
+BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, y.type="dissim", model.type="pow", perm=100)
 
 plot.decay(BCI.decay.exp, col=rgb(0,0,0,0.5))
 plot.decay(BCI.decay.exp, col="red", remove.dots=TRUE, add=TRUE)

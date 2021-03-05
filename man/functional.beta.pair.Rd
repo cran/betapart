@@ -16,12 +16,13 @@ functional.beta.pair(x, traits, index.family="sorensen")
 
 \arguments{
 \item{x}{ data frame, where rows are sites and columns are species. Alternatively \code{x} can 
-be a \code{functional.betapart} object derived from the \code{functional.betapart.core} function}
+be a \code{functional.betapart} object derived from the \code{functional.betapart.core} function or from the \code{functional.betapart.core.pairwise} function.} 
 \item{traits}{ if \code{x} is not a \code{functional.betapart} object, a data frame, where rows are species and columns are functional space dimensions (i.e. quantitative traits or synthetic axes after PCoA). Number of species in each site must be strictly higher than number of dimensions.}
 \item{index.family}{ family of dissimilarity indices, partial match of \code{"sorensen"} or \code{"jaccard"}.}
 }
 %NEW
-\details{Note that the the \code{betapart} package now supports external parallel computing for null models. However, this functionality is only available in \code{functional.betapart.core}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} for more details.   
+\details{If \code{x} is a \code{data.frame} then \code{functional.betapart.core.pairwise} is called to compute the distance matrices necessay to compute the different components of the beta diversity. Only the default argument values will be used, while \code{functional.betapart.core.pairwise} integrates options that could be much more efficient, such as internal parallelisation, or different options for the convexhull volume estimation. 
+Note that the the \code{betapart} package now supports external parallel computing for null models. As for internal parallelisation, these functionalities are only availabe in \code{functional.betapart.core} or in \code{functional.betapart.core.pairwise}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} and \code{functional.betepart.core.pairwise} for more details.   
 } 
 
 \value{
@@ -52,7 +53,7 @@ Sébastien Villéger, Andrés Baselga and David Orme
 }
 
 \seealso{
-\code{\link{functional.beta.multi}}, \code{\link{functional.betapart.core}}, \code{\link{beta.pair}}
+\code{\link{functional.beta.multi}}, \code{\link{functional.betapart.core}}, \code{\link{functional.betapart.core.pairwise}}, \code{\link{beta.pair}}
 }
 \examples{
 ##### 4 communities in a 2D functional space (convex hulls are rectangles)
@@ -73,6 +74,16 @@ text(2.5,3,"D",col="#DA70D6",cex=1.5)
 rect(1,1,2,2, col="#FF000050" , border="#FF0000") ; text(1.5,1.5,"A",col="#FF0000",cex=1.5)	
 rect(3,3,5,5, col="#1E90FF50", border="#1E90FF") ; text(4,4.2,"C",col="#1E90FF",cex=1.5)	
 
-test.pair<-functional.beta.pair(x=comm.test, traits=traits.test, index.family = "jaccard" )
+test.pair<-functional.beta.pair(x=comm.test, traits=traits.test, index.family = "jaccard")
 lapply(test.pair,round,2)
+
+#### with functional.betapart.core.pairwise
+test1 <- functional.betapart.core.pairwise(comm.test, traits.test)
+test.pair <- functional.beta.pair(test1)
+\dontrun{
+#### if internal parallelisation would be interesting (large community matrix)
+test1 <- functional.betapart.core.pairwise(comm.test, traits.test, parallel = TRUE,
+                                           opt.parallel = list(nc = 2))
+test.pair <- functional.beta.pair(test1)
+}
 }

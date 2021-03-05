@@ -17,7 +17,7 @@ phylo.beta.multi(x, tree, index.family="sorensen")
 \arguments{
 \item{x}{ a community matrix or data frame, where rows are sites and columns are species. Alternatively \code{x} can 
 be a \code{phylo.betapart} object derived from the \code{phylo.betapart.core} function}
-\item{tree}{ a phylogenetic tree of class phylo with tips names identical to species names from the community matrix.}
+\item{tree}{ a phylogenetic tree of class phylo with tips names identic to species names from the community matrix.}
 \item{index.family}{ family of dissimilarity indices, partial match of \code{"sorensen"} or \code{"jaccard"}.}
 }
 

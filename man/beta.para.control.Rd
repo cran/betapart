@@ -10,7 +10,7 @@ The values supplied in the \code{beta.para.control()} call replace the defaults,
 
 }
 \usage{
-beta.para.control(nc = floor(parallel::detectCores()/2), type = "PSOCK", 
+beta.para.control(nc = floor(parallel::detectCores()/2), type = "SOCK", 
                               LB = TRUE, size = 1)
 }
 %- maybe also 'usage' for other objects documented here.

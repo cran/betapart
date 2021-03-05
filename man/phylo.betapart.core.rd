@@ -15,7 +15,7 @@ phylo.betapart.core(x, tree)
 
 \arguments{
 \item{x}{ a community matrix or data frame, where rows are sites and columns are species.}
-\item{tree}{ a phylogenetic tree of class phylo with tips names identical to species names from the community matrix.}
+\item{tree}{ a phylogenetic tree of class phylo with tips names identic to species names from the community matrix.}
 }
 
 \value{

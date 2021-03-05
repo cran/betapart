@@ -2,8 +2,8 @@ Package: betapart
 Type: Package
 Title: Partitioning Beta Diversity into Turnover and Nestedness
         Components
-Version: 1.5.2
-Date: 2020-09-09
+Version: 1.5.3
+Date: 2021-03-04
 Authors@R: c(
     person("Andres", "Baselga", email = "andres.baselga@usc.es", role = c("aut", "cre")),
 	person("David", "Orme", role = "aut"),
@@ -13,14 +13,14 @@ Authors@R: c(
 	person("Maxime", "Logez", role = "aut"),
 	person("Renato", "Henriques-Silva", role = "ctb")
   )
-Imports: ape, fastmatch, geometry, picante, rcdd, doParallel, foreach,
-        parallel, itertools
+Imports: ape, fastmatch, geometry, picante, rcdd, doSNOW, foreach,
+        snow, itertools
 Suggests: vegan
 Description: Functions to compute pair-wise dissimilarities (distance matrices) and multiple-site dissimilarities, separating the turnover and nestedness-resultant components of taxonomic (incidence and abundance based), functional and phylogenetic beta diversity.
 License: GPL (>= 2)
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-09-09 16:44:01 UTC; Andres
+Packaged: 2021-03-05 09:51:05 UTC; Andres
 Author: Andres Baselga [aut, cre],
   David Orme [aut],
   Sebastien Villeger [aut],
@@ -30,4 +30,4 @@ Author: Andres Baselga [aut, cre],
   Renato Henriques-Silva [ctb]
 Maintainer: Andres Baselga <andres.baselga@usc.es>
 Repository: CRAN
-Date/Publication: 2020-09-09 17:10:02 UTC
+Date/Publication: 2021-03-05 13:00:02 UTC

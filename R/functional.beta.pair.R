@@ -3,7 +3,9 @@ functional.beta.pair<-function (x, traits, index.family = "sorensen")
     index.family <- match.arg(index.family, c("jaccard", "sorensen"))
     fbc<-x
     if (!inherits(x, "functional.betapart")) {
-        fbc <- functional.betapart.core(x,traits, multi=FALSE, warning.time=FALSE, return.details=FALSE)
+        fbc <- 
+            functional.betapart.core.pairwise(x, traits, 
+                                              return.details = FALSE, parallel = FALSE)
     } # end of computing core results
     
     switch(index.family, sorensen = {

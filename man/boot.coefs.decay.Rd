@@ -23,7 +23,7 @@ boot.coefs.decay(x, R)
 The function returns a list with: 
 
 \item{model.type}{  functional form of the model, either negative exponential or power law.}
-\item{y.type}{  similarities or dissimilarities.}
+\item{y.type}{  similarties or dissimilarities.}
 \item{boot.coefs}{  a matrix with the coefficients bootstrapped distributions, including intercept
  values in the first column, and slope values in the second column.}
 \item{original.coefs}{  model coefficients as estimated with a GLM using decay.model().}
@@ -33,7 +33,7 @@ The function returns a list with:
 
 \references{
 Gómez-Rodríguez, C. & Baselga, A. 2018. Variation among European beetle taxa in patterns of distance decay 
-of similarity suggests a major role of dispersal processes. Ecography 41: 1825–1834
+of similarity suggests a major role of dispersal processes. Ecography, in press
 }
 
 \author{
@@ -56,7 +56,7 @@ spat.dist<-dist(data.frame(UTM.EW, UTM.NS))
 
 dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
 
-BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=10)
+BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=100)
 
-boot.coefs.decay(BCI.decay.pow, 10)
+boot.coefs.decay(BCI.decay.pow, 50)
 }
