@@ -1,3 +1,7 @@
+# betapart 1.5.4
+
+### Updated functional.betapart.core.pairwise() to get vertice coordinates in the output 'details'
+
 # betapart 1.5.3
 
 * the libraries doParallel/parallel were replaced by doSNOW/snow for parallel computations.

@@ -1,7 +1,7 @@
 #' functional.betapart.core.pairwise
 #' @description Computes the basic quantities needed for computing the pairwise functional dissimilarity matrices. 
 #' This function is similar to functional.betapart.core with multi=FALSE but it provides more options for computing convex hulls shaping each assemblage (through option passed to qhull algorithm in 'geometry::convhulln()' as well as their intersections (computed based on library 'geometry' whenever possible, else with 'rcdd' as in functional.betapart.core.
-                                                                                                                                                                                                                                                           
+
 #'
 #' @usage functional.betapart.core.pairwise(x, traits, 
 #'                                   return.details = TRUE,
@@ -496,10 +496,6 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
       stop("size must be numeric (integer)", call. = TRUE)
   }
   
-  if (return.details) {
-    details <- vector(mode = "list", length = 2L)
-    names(details) <- c("FRi", "Intersection")
-  }
   D <- ncol(traits)
   Si <- rowSums(x)
   if (any(Si <= D)) 
@@ -511,74 +507,136 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
          call. = TRUE)
   FRi <- numeric(N)
   names(FRi) <- row.names(x)
-
-  for (i in 1:N) { # first try with qhull.opt1
-    tr_i <- traits[which(x[i, ] == 1), ]
-    FRi[i] <- tryCatch(convhulln(tr_i, options = qhull.opt1)$vol, 
-                       error = function(...) NA)
-  }
+  
   if (return.details) {
-    friqopt <- rep(sub("FA ", "", qhull.opt1), N)
+    details <- vector(mode = "list", length = 2L)
+    names(details) <- c("CH", "intersections")
+    
+    details$CH <- vector(mode = "list", 2L)
+    names(details$CH) <- c("FRi", "coord_vertices")
+    details$CH$coord_vertices <- vector(mode = "list", N)
+    names(details$CH$coord_vertices) <- rownames(x)
+    
+    details$intersections <- vector("list", 3L)
+    names(details$intersections) <- c("combinations", "volumes", "coord_vertices")
+    
   }
   
-  if (any(nna <- which(is.na(FRi))) & !is.null(qhull.opt2)) {
-    for (i in nna) {
+  if (progress) {
+    cat("Serial computing of convex hulls shaping assemblages with conv1\n")
+    pb <- txtProgressBar(max = N, style = 3)
+    progresse <- function(n) setTxtProgressBar(pb, n)
+  }
+  if (!return.details) {
+    for (i in 1:N) { # first try with qhull.opt1
       tr_i <- traits[which(x[i, ] == 1), ]
-      FRi[i] <- convhulln(tr_i, options = qhull.opt2)$vol
+      FRi[i] <- tryCatch(convhulln(tr_i, options = qhull.opt1)$vol, 
+                         error = function(...) NA)
+      if (progress)
+        progresse(i)
     }
-    if (return.details) {
+  }else {
+    friqopt <- rep(sub("FA ", "", qhull.opt1), N)
+    for (i in 1:N) { # first try with qhull.opt1
+      tr_i <- traits[which(x[i, ] == 1), ]
+      ch <- tryCatch(convhulln(tr_i, options = qhull.opt1), 
+                     error = function(...) NA)
+      if (!is.na(ch[1])) {
+        FRi[i] <- ch$vol
+        details$CH$coord_vertices[[i]] <- ch$p[unique(c(ch$hull)),]
+      }else {
+        FRi[i] <- NA
+      }
+      if (progress)
+        progresse(i)
+    }
+  }
+  if (progress)
+    cat("\n")
+  if (any(nna <- which(is.na(FRi))) & !is.null(qhull.opt2)) {
+    if (progress) {
+      cat("Serial computing of convex hulls shaping assemblages with conv2\n")
+      pb <- txtProgressBar(max = length(nna), style = 3)
+      progresse <- function(n) setTxtProgressBar(pb, n)
+    }
+    if (!return.details){
+      for (i in nna) {
+        tr_i <- traits[which(x[i, ] == 1), ]
+        FRi[i] <- convhulln(tr_i, options = qhull.opt2)$vol
+        if (progress)
+          progresse(i)
+      }
+    }else {
       friqopt[nna] <- sub("FA ", "", qhull.opt2)
+      for (i in nna) {
+        tr_i <- traits[which(x[i, ] == 1), ]
+        ch <- convhulln(tr_i, options = qhull.opt2)
+        FRi[i] <- ch$vol
+        details$CH$coord_vertices[[i]] <- ch$p[unique(c(ch$hull)),]
+        if (progress)
+          progresse(i)
+      }
     }
+    if (progress)
+      cat("\n")
   }
   if (any(nafri <- is.na(FRi))) {
     nafri <- which(nafri)
     if (length(nafri) < 5.5){
       ncom <- paste0(paste(row.names(x)[nafri], collapse = ", "), ",")
     }else{
-        ncom <- paste0(paste(row.names(x)[nafri[1:5]], collapse = ", "), "...")
-      }
+      ncom <- paste0(paste(row.names(x)[nafri[1:5]], collapse = ", "), "...")
+    }
     stop(sprintf("For communit%s %s it is not possible to compute %s convex hull volume.
          Please modify the options passed to qhull through the convhull.opt argument.", 
                  ifelse(length(nafri)== 1L, "y", "ies") , ncom,
                  ifelse(length(nafri)==1L, "its", "their")),
          call. = FALSE)
   }
-  if (return.details) {
-    FRid <- data.frame(FRi = FRi, qhull.opt = friqopt)  
-  }
+  
   sumFRi <- sum(FRi)
   comb2 <- combn(N, 2)
   vol_inter2_mat <- matrix(0, N, N, dimnames = list(row.names(x), 
                                                     row.names(x)))
+  if (return.details) {
+    FRid <- data.frame(FRi = FRi, qhull.opt = friqopt)
+  }
   
+  #### parallel ####
   if (parallel) {
     cl <- snow::makeCluster(nc, type = type)
     doSNOW::registerDoSNOW(cl)
-    # pas ff
-    if (type %in% c("SOCK", "PSOCK")) 
-      snow::clusterExport(cl, c("x", "traits",
-                                    "inter_geom", "qhull.opt1",
-                                    "inter_rcdd"), envir = environment())
+    
     if (progress) {
-      cat("Parallel process using inter_geom\n")
       n <- choose(nrow(x), 2)
       n <- if (is.null(size)){ 
         round(n/nc)
       }else {
         round(n/size)
       }
-      pb <- txtProgressBar(max = n, style = 3)
-      progressb <- function(n) setTxtProgressBar(pb, n)
-      opts <- list(progress = progressb)
     }
-    if (LB){ # load balancing
+    
+    if (!return.details) {
+      if (progress) {
+        cat("Parallel computing of intersections between pairs of assemblages with inter_geom\n")
+        pb <- txtProgressBar(max = n, style = 3)
+        progressb <- function(n) setTxtProgressBar(pb, n)
+        opts <- list(progress = progressb)
+      }
+      #### no details ####
+      if (type %in% c("SOCK", "PSOCK")) 
+        snow::clusterExport(cl, c("x", "traits",
+                                  "inter_geom", "qhull.opt1",
+                                  "inter_rcdd"), envir = environment())
+
+      #### 1. inter_geom 
       iter <- if (is.null(size)) 
         isplitCols(rbind(comb2, seq_len(ncol(comb2))), chunks = nc)
       else isplitCols(rbind(comb2, seq_len(ncol(comb2))), chunkSize = size)
       interp <- foreach(u = iter, .packages = c("rcdd", "geometry"),
-                        .inorder = FALSE, 
+                        .inorder = !LB, 
                         .options.snow = if (progress) opts else list()) %dopar% {
-                          u <- as.matrix(u)
+                          # u <- as.matrix(u)
                           vol <- numeric(ncol(u))
                           for (k in 1:length(vol)) {
                             i <- u[1, k]
@@ -596,71 +654,48 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
         cat("\n")
       vol_inter2 <- do.call(rbind, interp)
       vol_inter2 <- vol_inter2[order(vol_inter2[,2]), 1]
-    }else{ # no load balancing
-      iter <- if (is.null(size)) 
-        isplitCols(comb2, chunks = nc)
-      else isplitCols(comb2, chunkSize = size)
-        interp <- foreach(u = iter, .packages = c("rcdd", "geometry"), 
-                          .inorder = TRUE, 
-                          .options.snow = if (progress) opts else list()) %dopar% {
-                            u <- as.matrix(u)
-                            vol <- numeric(ncol(u))
-                            for (k in 1:length(vol)) {
-                              i <- u[1, k]
-                              j <- u[2, k]
-                              seti <- traits[which(x[i, ] == 1), ]
-                              setj <- traits[which(x[j, ] == 1), ]
-                              interij <- tryCatch(inter_geom(seti, setj, qhull.opt = qhull.opt1), 
-                                                  error = function(...) NA)
-                              vol[k] <- interij
-                            }
-                            vol
-                          }
+      
+      # now what happens if inter_geom fail
+      #### 2. inter_rcdd and qhull.opt1
+      nvna <- NULL
+      nvna2 <- NULL
+      
+      if (any(nvna <- which(is.na(vol_inter2)))) {
+        if (progress) {
+          cat("Parallel computing of intersections between pairs of assemblages with inter_rcdd & conv1\n")
+          n <- length(nvna)
+          pbr <- txtProgressBar(max = n, style = 3)
+          progressbr <- function(n) setTxtProgressBar(pbr, n)
+          opts <- list(progress = progressbr)
+        }
+        combna <- comb2[, nvna, drop = FALSE]
+        interna <- isplitCols(combna, chunkSize = 1)
+        interp2 <- foreach(u = interna, .packages = c("rcdd", "geometry"),
+                           .export = c("inter_rcdd"),
+                           .inorder = TRUE,
+                           .options.snow = if (progress) opts else list()) %dopar% {
+                             u <- as.matrix(u)
+                             vol <- numeric(ncol(u))
+                             for (k in 1:length(vol)) {
+                               i <- u[1, k]
+                               j <- u[2, k]
+                               seti <- traits[which(x[i, ] == 1), ]
+                               setj <- traits[which(x[j, ] == 1), ]
+                               interij <- tryCatch(inter_rcdd(seti, setj, qhull.opt = qhull.opt1), 
+                                                   error = function(...) NA)
+                               vol[k] <- interij
+                             }
+                             vol
+                           }
         if (progress)
           cat("\n")
-      vol_inter2 <- do.call(c, interp)
-    } # end LB
-    if (return.details) {
-      inters <- rep("geom", ncol(comb2))
-      qinteropts <- rep(sub("FA ", "", qhull.opt1), ncol(comb2))
-    }
-    if (any(nvna <- which(is.na(vol_inter2)))) {
-      if (progress) {
-        cat("Parallel process using inter_rcdd\n")
-        n <- length(nvna)
-        pbr <- txtProgressBar(max = n, style = 3)
-        progressbr <- function(n) setTxtProgressBar(pbr, n)
-        opts <- list(progress = progressbr)
+        vol_interna <- do.call(c, interp2)
+        vol_inter2[nvna] <- vol_interna
       }
-      combna <- comb2[, nvna, drop = FALSE]
-      interna <- isplitCols(combna, chunkSize = 1)
-      interp2 <- foreach(u = interna, .packages = c("rcdd", "geometry"),
-                         .export = c("inter_rcdd"),
-                         .inorder = TRUE,
-                         .options.snow = if (progress) opts else list()) %dopar% {
-                           u <- as.matrix(u)
-                           vol <- numeric(ncol(u))
-                           for (k in 1:length(vol)) {
-                             i <- u[1, k]
-                             j <- u[2, k]
-                             seti <- traits[which(x[i, ] == 1), ]
-                             setj <- traits[which(x[j, ] == 1), ]
-                             interij <- tryCatch(inter_rcdd(seti, setj, qhull.opt = qhull.opt1), 
-                                                 error = function(...) NA)
-                             vol[k] <- interij
-                           }
-                           vol
-                         }
-      if (progress)
-        cat("\n")
-      vol_interna <- do.call(c, interp2)
-      vol_inter2[nvna] <- vol_interna
-      if(return.details) {
-        inters[nvna] <- "rcdd"
-      }
+      #### 3. inter_rcdd and qhull.opt2
       if (any(nvna2 <- which(is.na(vol_inter2))) && !is.null(qhull.opt2)) {
         if (progress) {
-          cat("Parallel process using inter_rcdd and qhull.opt2\n")
+          cat("Parallel computing of intersections between pairs of assemblage with inter_rcdd & conv2\n")
           n <- length(nvna2)
           pbr2 <- txtProgressBar(max = n, style = 3)
           progressbr2 <- function(n) setTxtProgressBar(pbr2, n)
@@ -688,70 +723,336 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
           cat("\n")
         vol_interna2 <- do.call(c, interp3)
         vol_inter2[nvna2] <- vol_interna2
-        if(return.details) {
-          qinteropts[nvna2] <- sub("FA ", "", qhull.opt2)
-        } 
       }
-    }
+      
+    }else { # if return.details
+      #### details ####
+      if (progress) {
+        cat("Parallel computing of intersections between pairs of assemblages with inter_geom_coord\n")
+        pb <- txtProgressBar(max = n, style = 3)
+        progressb <- function(n) setTxtProgressBar(pb, n)
+        opts <- list(progress = progressb)
+      }
+      if (type %in% c("SOCK", "PSOCK")) 
+        snow::clusterExport(cl, c("x", "traits",
+                                  "inter_geom_coord", "qhull.opt1",
+                                  "inter_rcdd_coord"), envir = environment())
+      #### 1. inter_geom
+      iter <- if (is.null(size)) 
+        isplitCols(rbind(comb2, seq_len(ncol(comb2))), chunks = nc)
+      else isplitCols(rbind(comb2, seq_len(ncol(comb2))), chunkSize = size)
+      interp <- foreach(u = iter, .packages = c("rcdd", "geometry"),
+                        .inorder = !LB, .combine = c,
+                        .options.snow = if (progress) opts else list()) %dopar% {
+                          u <- as.matrix(u)
+                          n <- ncol(u)
+                          vol <- numeric(n)
+                          coords <- vector("list", n)
+                          ncl <- ncol(traits)
+                          for (k in 1:length(vol)) {
+                            i <- u[1, k]
+                            j <- u[2, k]
+                            seti <- traits[which(x[i, ] == 1), ]
+                            setj <- traits[which(x[j, ] == 1), ]
+                            interij <- tryCatch(inter_geom_coord(seti, setj, qhull.opt = qhull.opt1),
+                                                error = function(...) NA)
+                            if (!is.na(interij[1])) {
+                              vol[k] <- interij$vol
+                              coords[[k]] <- interij$coord
+                            }else {
+                              vol[k] <- NA
+                              coords[[k]] <- rep(NA, ncl)
+                            }
+                          }
+                          vol <- cbind(vol, u[3, ])
+                          res <- list(coords = coords, vol = vol)
+                          res
+                        }
+      if (progress)
+        cat("\n")
+      
+      coords <- do.call(c, interp[seq(1, length(interp), by = 2)])
+      vols <- do.call(rbind, interp[seq(2, length(interp), by = 2)])
+      ordo <- order(vols[,2])
+      coords <- coords[ordo]
+      vol_inter2 <- vols[ordo, 1]
+      
+      inters <- rep("geom", ncol(comb2))
+      qinteropts <- rep(sub("FA ", "", qhull.opt1), ncol(comb2))
+      
+      #### 2. inter_rcdd qhull.opt1
+      nvna <- NULL
+      nvna2 <- NULL
+      
+      if (any(nvna <- which(is.na(vol_inter2)))) {
+        if (progress) {
+          cat("Parallel computing of intersections between pairs of assemblages with inter_rcdd_coord & conv1\n")
+          n <- length(nvna)
+          pbr <- txtProgressBar(max = n, style = 3)
+          progressbr <- function(n) setTxtProgressBar(pbr, n)
+          opts <- list(progress = progressbr)
+        }
+        combna <- comb2[, nvna, drop = FALSE]
+        interna <- isplitCols(rbind(combna, nvna), chunkSize = 1)
+        interp2 <- foreach(u = interna, .packages = c("rcdd", "geometry"),
+                           .export = c("inter_rcdd_coord"),
+                           .inorder = !LB, .combine = c,
+                           .options.snow = if (progress) opts else list()) %dopar% {
+                             
+                             i <- u[1,]
+                             j <- u[2,]
+                             seti <- traits[which(x[i, ] == 1), ]
+                             setj <- traits[which(x[j, ] == 1), ]
+                             interij <- tryCatch(inter_rcdd_coord(seti, setj, qhull.opt = qhull.opt1),
+                                                 error = function(...) NA)
+                             if (!is.na(interij[1])) {
+                               vol <- interij$vol
+                               coords <- interij$coord
+                             }else {
+                               vol <- NA
+                               coords <- rep(NA, ncol(traits))
+                             }
+                             vol <- cbind(vol, u[3,])
+                             res <- list(coords = coords, vol = vol)
+                             res
+                           }
+        coordsa <- interp2[seq(1, length(interp2), by = 2)]
+        volsa <- do.call(rbind, interp2[seq(2, length(interp2), by = 2)])
+        ordoa <- volsa[,2]
+        coords[ordoa] <- coordsa
+        vol_inter2[ordoa] <- volsa[, 1]
+        
+        if (progress)
+          cat("\n")
+        inters[nvna] <- "rcdd"
+      }
+      
+      #### 3. inter_rcdd qhull.opt2
+      if (any(nvna2 <- which(is.na(vol_inter2))) && !is.null(qhull.opt2)) {
+        if (progress) {
+          cat("Parallel computing of intersections between pairs of assemblages with inter_rcdd_coord & conv2\n")
+          n <- length(nvna2)
+          pbr <- txtProgressBar(max = n, style = 3)
+          progressbr <- function(n) setTxtProgressBar(pbr, n)
+          opts <- list(progress = progressbr)
+        }
+        combna2 <- comb2[, nvna2, drop = FALSE]
+        interna2 <- isplitCols(rbind(combna2, nvna2), chunkSize = 1)
+        interp3 <- foreach(u = interna2, .packages = c("rcdd", "geometry"),
+                           .export = c("inter_rcdd_coord", "qhull.opt2"),
+                           .inorder = !LB, .combine = c,
+                           .options.snow = if (progress) opts else list()) %dopar% {
+                             
+                             i <- u[1,]
+                             j <- u[2,]
+                             seti <- traits[which(x[i, ] == 1), ]
+                             setj <- traits[which(x[j, ] == 1), ]
+                             interij <- tryCatch(inter_rcdd_coord(seti, setj, qhull.opt = qhull.opt2),
+                                                 error = function(...) NA)
+                             if (!is.na(interij[1])) {
+                               vol <- interij$vol
+                               coords <- interij$coord
+                             }else {
+                               vol <- NA
+                               coords <- rep(NA, ncol(traits))
+                             }
+                             vol <- cbind(vol, u[3,])
+                             res <- list(coords = coords, vol = vol)
+                             res
+                           }
+        coordsa2 <- interp3[seq(1, length(interp3), by = 2)]
+        volsa2 <- do.call(rbind, interp3[seq(2, length(interp3), by = 2)])
+        ordoa2 <- volsa2[,2]
+        coords[ordoa2] <- coordsa2
+        vol_inter2[ordoa2] <- volsa2[, 1]
+        
+        if (progress)
+          cat("\n")
+        inters[nvna2] <- "rcdd"
+        qinteropts[nvna2] <- sub("FA ", "", qhull.opt2)
+      }
+    }# not return.details
     snow::stopCluster(cl)
   } # end parallel
   else { # in serial
-    vol_inter2 <- numeric(N)
     if (progress) {
-      cat("Serial process\n")
+      if (return.details){
+        cat("Serial computing of intersections between pairs of assemblages with inter_geom_coord\n")
+      }else{
+        cat("Serial computing of intersections between pairs of assemblages with inter_geom\n")  
+        }
       # initialisation of the progressbar for the interaction
       n <- ncol(comb2)
-      pbs <- txtProgressBar(max = n, style = 3)
-      progressbs <- function(n) setTxtProgressBar(pbs, n)
+      pbss <- txtProgressBar(max = n, style = 3)
+      progressbs <- function(n) setTxtProgressBar(pbss, n)
       # opts <- list(progress = progressb)
     }
-    for (k in 1:ncol(comb2)) {
-      i <- comb2[1, k]
-      j <- comb2[2, k]
-      seti <- traits[which(x[i, ] == 1), ]
-      setj <- traits[which(x[j, ] == 1), ]
-      vol_inter2[k] <-  tryCatch(inter_geom(seti, setj, qhull.opt = qhull.opt1), 
-                                 error = function(...) NA)
-      if (progress)
-        progressbs(k)
-    }
-    if (return.details) {
-      inters <- rep("geom", ncol(comb2))
-      qinteropts <- rep(sub("FA ", "", qhull.opt1), ncol(comb2))
-    }
-    if (any(nvna <- which(is.na(vol_inter2)))) {
-      for (k in nvna) {
+    #### serial ####
+    vol_inter2 <- numeric(N)
+    #### no details ####
+    if (!return.details){
+      for (k in 1:ncol(comb2)) {
         i <- comb2[1, k]
         j <- comb2[2, k]
         seti <- traits[which(x[i, ] == 1), ]
         setj <- traits[which(x[j, ] == 1), ]
-        vol_inter2[k] <-  inter_rcdd(seti, setj, qhull.opt1)
+        vol_inter2[k] <-  tryCatch(inter_geom(seti, setj, qhull.opt = qhull.opt1), 
+                                   error = function(...) NA)
+        if (progress)
+          progressbs(k)
       }
-      if(return.details) {
-        inters[nvna] <- "rcdd"
+      if (progress)
+        close(pbss)
+    }else {
+      nct <- ncol(traits)
+      coords <- vector("list", ncol(comb2))
+      inters <- rep("geom", ncol(comb2))
+      qinteropts <- rep(sub("FA ", "", qhull.opt1), ncol(comb2))
+      #### details ####
+      for (k in 1:ncol(comb2)) {
+        i <- comb2[1, k]
+        j <- comb2[2, k]
+        seti <- traits[which(x[i, ] == 1), ]
+        setj <- traits[which(x[j, ] == 1), ]
+        interij <- tryCatch(inter_geom_coord(seti, setj, qhull.opt = qhull.opt1),
+                            error = function(...) NA)
+        if (!is.na(interij[1])) {
+          vol_inter2[k] <- interij$vol
+          coords[[k]] <- interij$coord
+        }else {
+          vol_inter2[k] <- NA
+          coords[[k]] <- rep(NA, nct)
+        }
+        if (progress)
+          progressbs(k)
       }
-      if (any(nvna2 <- which(is.na(vol_inter2))) && !is.null(qhull.opt2)) {
-        for (k in nvna2) {
+      if (progress)
+        close(pbss)
+    }
+    nvna <- which(is.na(vol_inter2))
+    nvn <- setdiff(1:ncol(comb2), nvna)
+    if (any(nvna)) {
+      nvna <- sort(nvna)
+      if (progress) {
+        if (return.details) {
+          cat("Serial computing of intersections between pairs of assemblages with inter_rcdd_coord & qhull.opt1\n")
+        }else{
+          cat("Serial computing of intersections between pairs of assemblages with inter_rcdd & qhull.opt1\n")
+        }
+        pbs <- txtProgressBar(max = length(nvna), style = 3)
+        progressbs <- function(n) setTxtProgressBar(pbs, n)
+        u <- 1
+      }
+      if (!return.details) {
+        for (k in nvna) {
           i <- comb2[1, k]
           j <- comb2[2, k]
           seti <- traits[which(x[i, ] == 1), ]
           setj <- traits[which(x[j, ] == 1), ]
-          vol_inter2[k] <-  inter_rcdd(seti, setj, qhull.opt2)
-          vol_inter2[nvna2] <- vol_interna2
+          vol_inter2[k] <-  inter_rcdd(seti, setj, qhull.opt1)
+          if (progress) {
+            progressbs(u)
+            u <- u+1
+          }
+        }
+        if (progress)
+          cat("\n")
+      }
+      else{
+        for (k in nvna) {
+          i <- comb2[1, k]
+          j <- comb2[2, k]
+          seti <- traits[which(x[i, ] == 1), ]
+          setj <- traits[which(x[j, ] == 1), ]
+          interij <- tryCatch(inter_rcdd_coord(seti, setj, qhull.opt = qhull.opt1),
+                              error = function(...) NA)
+          if (!is.na(interij[1])) {
+            vol_inter2[k] <- interij$vol
+            coords[[k]] <- interij$coord
+          }else {
+            vol_inter2[k] <- NA
+            coords[[k]] <-  rep(NA, nct)
+          }
+          if (progress) {
+            progressbs(u)
+            u <- u+1
+          }
+        }
+        if (progress)
+          cat("\n")
+        inters[nvna] <- "rcdd"
+      }
+      if (any(nvna2 <- which(is.na(vol_inter2))) && !is.null(qhull.opt2)) {
+        if (progress) {
+          if (return.details){
+            cat("Serial computing of intersections between pairs of assemblages with inter_rcdd_coord & qhull.opt2\n")
+          }else {
+            cat("Serial computing of intersections between pairs of assemblages with inter_rcdd & qhull.opt2\n")
+          }
+          pbs <- txtProgressBar(max = length(nvna2), style = 3)
+          progressbs <- function(n) setTxtProgressBar(pbs, n)
+          u <- 1
+        }
+        if (!return.details){
+          for (k in nvna2) {
+            i <- comb2[1, k]
+            j <- comb2[2, k]
+            seti <- traits[which(x[i, ] == 1), ]
+            setj <- traits[which(x[j, ] == 1), ]
+            vol_inter2[k] <-  inter_rcdd(seti, setj, qhull.opt2)
+            if (progress) {
+              progressbs(u)
+              u+1
+            }
+          }
+          if (progress)
+            cat("\n")# end for nvna2
+        }else {
+          for (k in nvna2) {
+            i <- comb2[1, k]
+            j <- comb2[2, k]
+            seti <- traits[which(x[i, ] == 1), ]
+            setj <- traits[which(x[j, ] == 1), ]
+            interij <- tryCatch(inter_rcdd_coord(seti, setj, qhull.opt = qhull.opt2),
+                                error = function(...) NA)
+            if (!is.na(interij[1])) {
+              vol_inter2[k] <- interij$vol
+              coords[[k]] <- interij$coord
+            }else {
+              vol_inter2[k] <- NA
+              coords[[k]] <-  rep(NA, nct)
+            }
+            if (progress) {
+              progressbs(u)
+              u+1
+            }
+          }
+          if (progress)
+            cat("\n")
           if(return.details) {
             qinteropts[nvna2] <- sub("FA ", "", qhull.opt2)
-          } # end details
-        } # end for nvna2
+          }
+        }
       } # end nvna2
     } # end nvna
   } # end serial
   if (return.details) {
+    details$CH$FRi <- FRid
+    
     couple <- paste0(sprintf(paste0("%0", nchar(N), "d"), comb2[1,]),
                      "_",
                      sprintf(paste0("%0", nchar(N), "d"), comb2[2,]))
-    details$Intersection <- data.frame(Comms = couple, Inter = inters, 
-                                       qhull.opt = qinteropts)
-    details$FRi <- FRid
+    details$intersections$combinations <- vector("list", 1L)
+    details$intersections$combinations[[1]] <-  data.frame(Comms = couple, Inter = inters, 
+                                                           qhull.opt = qinteropts)
+    details$intersections$volumes <- vector("list", 1L)
+    details$intersections$volumes[[1]] <- vol_inter2
+    
+    details$intersections$coord_vertices <- vector("list", 1L)
+    details$intersections$coord_vertices[[1]] <- coords
+
+    names(details$intersections$coord_vertices[[1]]) <- 
+      details$intersections$combinations[[1]]$Comms
   }else {
     details <- NA
   }
@@ -782,6 +1083,7 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
   class(functional.computations) <- "functional.betapart"
   return(functional.computations)
 }
+
 
 #' Internal function to compute convexhull volume
 #'
@@ -895,6 +1197,129 @@ inter_rcdd <- function(set1, set2, qhull.opt = "FA", conv2 = function(...) NA) {
   return(vol_inter)
 }
 
+#' Internal function to compute convexhull volume and vertice coordinates
+#' @description Estimation of the convexhull volume and the vertices of the intersection of two hypervolumes based on geometry functions
+#' 
+#' @param ps1 A matrix of coordinates.
+#' @param ps2 A second matrix of coordinates.
+#' @param options Options pass to \code{\link[geometry]{halfspacen}}.
+#' @param tol Tolerance, see \code{\link[geometry]{intersectn}}.
+#' @param fp Coordinates of feasible point (NULL).
+#' @param qhull.opt qhull options.
+#'
+#' @return {A list of 2 elements.
+#' \describe{\item{coord}{ the vertice coordinates}
+#'   \item{vol}{ a volume corresponding to the intersection of the two hypervolumes}
+#'   }
+#' } 
+#' @seealso \code{\link{inter_rcdd_coord}}
+#' @examples
+#' \dontrun{mat1 <- matrix(runif(30), 10)
+#' mat2 <- matrix(runif(30), 10)
+#' inter_geom_coord(mat1, mat2)}
+
+inter_geom_coord <- function (ps1, ps2, options = "Tv", tol = 0,
+                              fp = NULL, qhull.opt = "n FA") 
+{
+  if (!grepl("^n ", qhull.opt)) {
+    qhull.opt <- paste0("n ", qhull.opt)
+  }
+  distinct <- any(apply(ps1, 2, min) > apply(ps2, 2, max)) || 
+    any(apply(ps1, 2, max) < apply(ps2, 2, min))
+  if (distinct) {
+    coord <- rep(NA, ncol(ps1))
+    vol <- 0
+    res <- list(coord = coord, vol = vol)
+    return(res)
+  }
+  ch1 <- convhulln(ps1, "n FA")
+  ch2 <- convhulln(ps2, "n FA")
+  ch1s <- ch1
+  ch2s <- ch2
+  if (is.null(fp)) {
+    fp <- feasible.point(ch1s, ch2s, tol = tol)
+    if (all(is.na(fp))) {
+      stop("all fp is.na")
+    }
+  }
+  else {
+    if (!is.numeric(fp)) {
+      stop("fp should be numeric")
+    }
+    if (length(fp) != ncol(ps1)) {
+      stop("fp should have same dimension as ps1 and ps2")
+    }
+  }
+  ps <- halfspacen(rbind(ch1s$normals, ch2s$normals), fp, options = options)
+  if (all(is.na(ps)) || is.null(ps)) {
+    stop("ps problem")
+  }
+  if (tol != 0) {
+    ps <- round(ps, ceiling(-log10(abs(tol/2))))
+    ps <- ps[!duplicated(ps), ]
+  }
+  ch <- convhulln(ps, qhull.opt)
+  if ((ch$vol > ch1$vol * (1 + 1e-04))) {
+    warning("Volume of final intersection hull is bigger than first of the original hulls\n", 
+            "ch1 vol = ", ch1$vol, "\n", "ch vol = ", ch$vol, 
+            "\n", "Returning ch1")
+    ch <- ch1
+  }
+  if ((ch$vol > ch2$vol * (1 + 1e-04))) {
+    warning("Volume of final intersection hull is bigger than first of the original hulls\n", 
+            "ch2 vol = ", ch2$vol, "\n", "ch vol = ", ch$vol, 
+            "\n", "Returning ch2")
+    ch <- ch2
+  }
+  coord <- ch$p[unique(c(ch$hull)),]
+  vol <- ch$vol
+  res <- list(coord = coord, vol = vol)
+  return(res)
+}
+
+#' Internal function to compute convexhull volume and vertice coordinates
+#' @description Estimation of the convexhull volume and the vertices of the intersection of two hypervolumes based on rcdd functions
+#' 
+#' @param set1 A matrix of coordinates 
+#' @param set2 A matrix of coordinates 
+#' @param qhull.opt Qhull options, see \url{http://www.qhull.org/html/qh-optq.htm}
+#' @param conv2 A function applyed if the convexhull function crashes
+#'
+#' @return {A list of 2 elements.
+#' \describe{\item{coord}{ the vertice coordinates}
+#'   \item{vol}{ a volume corresponding to the intersection of the two hypervolumes}
+#'   }
+#' } 
+#' @seealso \code{\link{inter_geom_coord}}
+#' @examples
+#' \dontrun{mat1 <- matrix(runif(30), 10)
+#' mat2 <- matrix(runif(30), 10)
+#' inter_rcdd_coord(mat1, mat2)}
+
+inter_rcdd_coord <- function(set1, set2, qhull.opt = "FA", 
+                             conv2 = function(...) NA) {
+  set1rep <- d2q(cbind(0, cbind(1, set1)))
+  set2rep <- d2q(cbind(0, cbind(1, set2)))
+  polytope1 <- redundant(set1rep, representation = "V")$output
+  polytope2 <- redundant(set2rep, representation = "V")$output
+  H_chset1 <- scdd(polytope1, representation = "V")$output
+  H_chset2 <- scdd(polytope2, representation = "V")$output
+  H_inter <- rbind(H_chset1, H_chset2)
+  V_inter <- scdd(H_inter, representation = "H")$output
+  vert_1n2 <- q2d(V_inter[, -c(1, 2)])
+  coord_vert_inter <- rep(NA, ncol(set1))
+  vol_inter <- 0 
+  if (is.matrix(vert_1n2)) { 
+    if (nrow(vert_1n2) > ncol(vert_1n2)) {
+      vol_inter <- tryCatch(convhulln(vert_1n2, qhull.opt)$vol, 
+                            error = function(...) conv2(vert_1n2))
+      coord_vert_inter <- vert_1n2
+    }
+  }
+  res <- list(coord = coord_vert_inter, vol = vol_inter)
+  return(res)
+}
+
 #' Specifying control Values for internal parallel cluster
 #'
 #' @description Set the values used to generate the parallel cluster.
@@ -938,3 +1363,4 @@ beta.para.control <- function(nc = floor(parallel::detectCores()/2), type = "SOC
 qhull.opt <- function(conv1 = "QJ", conv2 = NULL) {
   list(conv1 = conv1, conv2 = conv2)
 }
+

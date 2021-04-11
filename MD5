@@ -1,6 +1,6 @@
-7cfc455dc58f81195fb65a4e6d006250 *DESCRIPTION
+58a5341ff4fd152fe16610989de461af *DESCRIPTION
 3eade244711c66ccf7cb9a0cc3a2107e *NAMESPACE
-883f1022ce6c4dfbcfe2e9b13736b554 *NEWS.md
+88c256df9ef4ecfacda9dd2dee761510 *NEWS.md
 b108398ce7d4336da8ccf073435d13b5 *R/beta-multi-abund.R
 acc9196792fb9368dd2dead3515ef017 *R/beta-pair-abund.R
 7176a7e7d5b996d619c14ee0126e8cd6 *R/beta-sample-abund.R
@@ -14,7 +14,7 @@ b30da58d2839b8c3875c49388fbe1022 *R/bray-part.R
 7f42db8b122548672cee83e46a62ba93 *R/functional.beta.multi.R
 03a72ca9b2b951678de83e3d070b376a *R/functional.beta.pair.R
 7a46fc08579a0f138d83bf455b1ffb64 *R/functional.betapart.core.R
-1ba9d5f5ee19209b5e8f48d5b2169a90 *R/functional.betapart.core.pairwise.R
+b3e42bd4b0268c6b8740808a301591d1 *R/functional.betapart.core.pairwise.R
 6f6d401bd886544a2b66c18720b46e2c *R/phylo.beta.multi.r
 93b5bb717e26c564f2aca817125647e4 *R/phylo.beta.pair.r
 cedfde7850bba20a8fa1a0bad5649b00 *R/phylo.betapart.core.r
@@ -45,7 +45,9 @@ ff28542a2d0afa4888143fc1cb33c98e *man/functional.beta.multi.Rd
 f9d7c370949662a159761bcbcc57fe86 *man/functional.betapart.core.Rd
 7406afd96cda544a581b10ab977db0cb *man/functional.betapart.core.pairwise.Rd
 45b808a0507639de9768d9672c6841c9 *man/inter_geom.Rd
+ab1ad1792dd881895007c89a5f732094 *man/inter_geom_coord.Rd
 b98e1909150ffa66591d11c55282af16 *man/inter_rcdd.Rd
+6ab9c17d68e13af32be307617c51cad4 *man/inter_rcdd_coord.Rd
 b411bd8da1e01172f5ec9fc3d114a258 *man/phylo.beta.multi.rd
 ae12cc9c5b1e1f62b2e92235004a7896 *man/phylo.beta.pair.rd
 8de28dc9b9b35a55a237866dae236eca *man/phylo.betapart.core.rd
