@@ -1,3 +1,7 @@
+# betapart 1.5.5
+
+### A bug of functinal.betapart.core() was fixed to run it in parallel with multi = TRUE
+
 # betapart 1.5.4
 
 ### Updated functional.betapart.core.pairwise() to get vertice coordinates in the output 'details'

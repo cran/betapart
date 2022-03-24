@@ -300,7 +300,7 @@ functional.betapart.core <- function (x, traits, multi = TRUE, warning.time = TR
     not.shared[comb2[,2:1]] <- FRi[comb2[,2]]-vol_inter2_mat[comb2[,2:1]]  
     
     not.shared <- pmax(not.shared, 0)
-    coord_vert_inter2 <- NA
+    coord_vert_inter2 <- if (multi) coord_vert_i else NA
   }else {
     if (progress) {
       cat("Serial process\n")

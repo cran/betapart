@@ -560,21 +560,27 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
       progresse <- function(n) setTxtProgressBar(pb, n)
     }
     if (!return.details){
+      u <- 1
       for (i in nna) {
         tr_i <- traits[which(x[i, ] == 1), ]
         FRi[i] <- convhulln(tr_i, options = qhull.opt2)$vol
-        if (progress)
-          progresse(i)
+        if (progress){
+          progresse(u)
+          u <- u+1
+        }
       }
     }else {
       friqopt[nna] <- sub("FA ", "", qhull.opt2)
+      u <- 1
       for (i in nna) {
         tr_i <- traits[which(x[i, ] == 1), ]
         ch <- convhulln(tr_i, options = qhull.opt2)
         FRi[i] <- ch$vol
         details$CH$coord_vertices[[i]] <- ch$p[unique(c(ch$hull)),]
-        if (progress)
-          progresse(i)
+        if (progress){
+          progresse(u)
+          u <- u+1
+          }
       }
     }
     if (progress)
@@ -836,10 +842,12 @@ functional.betapart.core.pairwise <- function (x, traits, return.details = TRUE,
           progressbr <- function(n) setTxtProgressBar(pbr, n)
           opts <- list(progress = progressbr)
         }
+       
+        clusterExport(cl, "qhull.opt2", envir = environment())
+        
         combna2 <- comb2[, nvna2, drop = FALSE]
         interna2 <- isplitCols(rbind(combna2, nvna2), chunkSize = 1)
         interp3 <- foreach(u = interna2, .packages = c("rcdd", "geometry"),
-                           .export = c("inter_rcdd_coord", "qhull.opt2"),
                            .inorder = !LB, .combine = c,
                            .options.snow = if (progress) opts else list()) %dopar% {
                              
