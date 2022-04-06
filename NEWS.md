@@ -1,6 +1,10 @@
+# betapart 1.5.6
+
+### Modified function `decay.model()` to implement the block permutation described in Martínez-Santalla et al 2022 (J. Biogeogr.) for assessing the significance of the distance decay model
+
 # betapart 1.5.5
 
-### A bug of functinal.betapart.core() was fixed to run it in parallel with multi = TRUE
+### A bug of functional.betapart.core() was fixed to run it in parallel with multi = TRUE
 
 # betapart 1.5.4
 

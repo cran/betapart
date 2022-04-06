@@ -1,6 +1,6 @@
-3435ce1dae94e11f80a952106bde1824 *DESCRIPTION
+48636c22b3a57f96b559c87ac39685ba *DESCRIPTION
 3eade244711c66ccf7cb9a0cc3a2107e *NAMESPACE
-3447515cc3ad902acfe6d7e6db303be2 *NEWS.md
+edba7c096993b2e3de4613dcc5582d8e *NEWS.md
 b108398ce7d4336da8ccf073435d13b5 *R/beta-multi-abund.R
 acc9196792fb9368dd2dead3515ef017 *R/beta-pair-abund.R
 7176a7e7d5b996d619c14ee0126e8cd6 *R/beta-sample-abund.R
@@ -10,7 +10,7 @@ a393eca0769ba0f921d9eada1668bda5 *R/beta-temporal.R
 2c6397e18c4af3bcd73526adfdda8834 *R/betapart-core.R
 488581138eb20baafdaa9c5536445e58 *R/betapart.R
 b30da58d2839b8c3875c49388fbe1022 *R/bray-part.R
-079b007e12916aaa388bfac166f990c5 *R/decay-functions.R
+c9e2dfccd3ab5a7ebb69fd13b53f1907 *R/decay-functions.R
 7f42db8b122548672cee83e46a62ba93 *R/functional.beta.multi.R
 03a72ca9b2b951678de83e3d070b376a *R/functional.beta.pair.R
 3ca839f2619639e1a2120cb48bedddf0 *R/functional.betapart.core.R
@@ -35,11 +35,11 @@ b147bbe5111566398b1ac24f26fa656e *man/betapart-package.Rd
 775b2574cba4ecf6ac04cf38991be967 *man/betapart.core.Rd
 11ab23de43776679bd87a5826281a526 *man/betapart.core.abund.Rd
 9f86c87f31b74b7d5bec3523942a0320 *man/betatest.Rd
-84b44a137a1310c976a3ad5d2553aca7 *man/boot.coefs.decay.Rd
+c96ff142f999eeffbedb588e334be91f *man/boot.coefs.decay.Rd
 659d9065deb80cad6bad6b78fda586a0 *man/bray.part.Rd
 59dcb0092db2b27079b9f66ccb8670d7 *man/ceram.n.Rd
 db5c864ecec4cd645eeea5e40b4fbf11 *man/ceram.s.Rd
-040e7ef8d5c33e1aa1b317989afe752d *man/decay.model.Rd
+7a19731321ba443b3c49be1639693a44 *man/decay.model.Rd
 ff28542a2d0afa4888143fc1cb33c98e *man/functional.beta.multi.Rd
 1795d7fffd7931d4cc4dfaf8ad6ad87f *man/functional.beta.pair.Rd
 f9d7c370949662a159761bcbcc57fe86 *man/functional.betapart.core.Rd
@@ -51,5 +51,5 @@ b98e1909150ffa66591d11c55282af16 *man/inter_rcdd.Rd
 b411bd8da1e01172f5ec9fc3d114a258 *man/phylo.beta.multi.rd
 ae12cc9c5b1e1f62b2e92235004a7896 *man/phylo.beta.pair.rd
 8de28dc9b9b35a55a237866dae236eca *man/phylo.betapart.core.rd
-0c4dab2c27a86975f78ba711d02b993b *man/plot.decay.Rd
+84ea93b68fb76664adb1a3d0cdf16c27 *man/plot.decay.Rd
 46d777b890389e2a8255185778bf9f5a *man/qhull.opt.Rd

@@ -12,7 +12,7 @@ or power law function as estimated with decay.model().
 }
 
 \usage{
-\method{plot}{decay}(x, xlim=c(0,max(x$data[,1])), ylim=c(0,1), 
+\method{plot}{decay}(x, xlim=c(0,max(x$data.x)), ylim=c(0,1), 
 add=FALSE, remove.dots=FALSE, col="black", pch=1, lty=1, lwd=5, cex=1, ...)
 
 }
@@ -34,7 +34,7 @@ add=FALSE, remove.dots=FALSE, col="black", pch=1, lty=1, lwd=5, cex=1, ...)
 
 \references{
 Gómez-Rodríguez, C. & Baselga, A. 2018. Variation among European beetle taxa in patterns of distance decay 
-of similarity suggests a major role of dispersal processes. Ecography, in press
+of similarity suggests a major role of dispersal processes. Ecography 41: 1825-1834
 }
 
 \author{

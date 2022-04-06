@@ -11,12 +11,13 @@ Takes the output of decay.model() and bootstraps the parameters (intercept and s
 }
 
 \usage{
-boot.coefs.decay(x, R)
+boot.coefs.decay(x, resamples, st.val = c(0.005, -0.00001))
 }
 
 \arguments{
 \item{x}{ the output of decay.model().}
-\item{R}{ the number of bootstrap samples.}
+\item{resamples}{ the number of bootstrap samples.}
+\item{st.val}{ starting values for the GLM.}
 }
 
 \value{
@@ -33,7 +34,7 @@ The function returns a list with:
 
 \references{
 Gómez-Rodríguez, C. & Baselga, A. 2018. Variation among European beetle taxa in patterns of distance decay 
-of similarity suggests a major role of dispersal processes. Ecography, in press
+of similarity suggests a major role of dispersal processes. Ecography 41: 1825-1834
 }
 
 \author{
@@ -58,5 +59,5 @@ dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
 
 BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=100)
 
-boot.coefs.decay(BCI.decay.pow, 50)
+boot.coefs.decay(BCI.decay.pow, resamples=50)
 }

@@ -12,7 +12,8 @@ with spatial (or any other) distance, or, equivalently, (ii) the increase of ass
 }
 
 \usage{
-decay.model(y, x, model.type="exponential", y.type="similarities", perm=100)
+decay.model(y, x, model.type="exponential", y.type="similarities", 
+perm=100, st.val = c(0.005, -0.00001))
 }
 
 \arguments{
@@ -23,6 +24,7 @@ partial match of \code{"exponential"} or \code{"power"}.}
 \item{y.type}{ polarity of the code{dist} object (i.e. 1 means total similarity or total dissimilarity), 
 partial match of \code{"similarities"} or \code{"dissimilarities"}.}
 \item{perm}{ number of randomizations to assess significance.}
+\item{st.val}{ starting values for the GLM.}
 }
 
 \value{
@@ -40,15 +42,16 @@ increases with distance in a negative exponential or power law model.}
 }
 
 \references{
-Nekola, J.C. & McGill, B.J. 2014. Scale dependency in the functional form of the distance decay 
-relationship. Ecography, 37, 309-320
+Gómez-Rodríguez C, Baselga A. 2018. Variation among European beetle taxa in patterns of distance decay 
+of similarity suggests a major role of dispersal processes. Ecography 41: 1825-1834
 
-Gómez-Rodríguez, C. & Baselga, A. 2018. Variation among European beetle taxa in patterns of distance decay 
-of similarity suggests a major role of dispersal processes. Ecography, in press
+Martínez-Santalla S, Martín-Devasa R, Gómez-Rodríguez C, Crujeiras RM, Baselga A. 2022. Assessing the 
+non-linear decay of community similarity: permutation and site-block resampling significance tests. 
+Journal of Biogeography, in press
 }
 
 \author{
-Andrés Baselga
+Sara Martínez-Santalla, Ramiro Martín-Devasa, Carola Gómez-Rodríguez, Rosa M. Crujeiras, Andrés Baselga
 }
 
 \seealso{
