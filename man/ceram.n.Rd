@@ -4,7 +4,7 @@
 \alias{ceram.n}
 \title{Cerambycidae from Northern European Countries}
 \description{
-      The ceram.n data frame has 19 rows and 634 columns. Columns are presence/absence values of 634 species. The variable names are formed from the scientific names. The case names are standard country abbreviations, excepting RSS (Southern European Russia), RSC (Central European Russia) and RSN (Northern European Russia).
+      The ceram.n data frame has 18 rows and 634 columns. Columns are presence/absence values of 634 species. The variable names are formed from the scientific names. The row names are standard country abbreviations, excepting RSS (Southern European Russia), RSC (Central European Russia) and RSN (Northern European Russia).
      }
 \usage{data(ceram.n)}
 \source{http://www.cerambycidae.net/}

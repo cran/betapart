@@ -30,12 +30,10 @@ dissimilarity (balanced changes in abundance vs. abundance gradients) using comm
 The framework has been extended for functional beta diversity with commands \command{functional.betapart.core}, 
 \command{functional.beta.pair} and \command{functional.beta.multi}, and for phylogenetic beta diversity with commands \command{phylo.betapart.core}, 
 \command{phylo.beta.pair} and \command{phylo.beta.multi}.
-The package also allows fitting negative exponential or power law distance-decay models for assessing the relationship between assemblage 
-(dis)similarity and spatial (or other) distance. \command{decay.model} will fit the distance-decay function via GLM, \command{plot.decay} will 
-plot the distance-decay pattern, and \command{boot.coefs.decay} will bootstrap the paramaters of the distance-decay model.
+The package also allows fitting negative exponential, power law or Gompertz distance-decay models for assessing the relationship between assemblage (dis)similarity and spatial (or other) distance. \command{decay.model} fits the nonlinear distance-decay function via the \pkg{minpack.lm} package, \command{plot.decay} plots the distance-decay pattern and the fitted model, \command{boot.coefs.decay} bootstraps the paramaters of the distance-decay model, and \command{zdep} assesses the differences between parameters of two distance-decay models.
 }
 \author{
-Andrés Baselga, David Orme, Sébastien Villéger, Julien De Bortoli and Fabien Leprieur
+Andres Baselga, David Orme, Sebastien Villéger, Julien {De Bortoli}, Fabien Leprieur, Maxime Logez, Sara Martínez-Santalla, Ramiro Martín-Devasa, Carola Gómez-Rodríguez, and Rosa M. Crujeiras
 }
 
 \references{
@@ -61,6 +59,14 @@ Legendre P. 2014. Interpreting the replacement and richness difference component
 
 Leprieur F, Albouy C, De Bortoli J, Cowman PF, Belwood DR, Mouillot D. 2012. Quantifying phylogenetic beta diversity: 
 distinguishing between "true" turnover of lineages and phylogenetic diversity gradients. PLoS One 7(8): e42760 
+
+Martín-Devasa R, Martínez-Santalla S, Gómez-Rodríguez C, Crujeiras RM, Baselga A. 2022. Species range size shapes distance decay in community similarity. Diversity and Distributions 28: 1348-1357
+
+Martín-Devasa R, Martínez-Santalla S, Gómez-Rodríguez C, Crujeiras RM, Baselga A. 2022. Comparing distance-decay parameters: a novel test under pairwise dependence. Ecological Informatics 72: 101894 
+
+Martínez-Santalla S, Martín-Devasa R, Gómez-Rodríguez C, Crujeiras RM, Baselga A. 2022. Assessing the 
+non-linear decay of community similarity: permutation and site-block resampling significance tests. 
+Journal of Biogeography 49: 968-978
 
 Villéger, S. Grenouillet, G., Brosse, S. 2013. Decomposing functional beta-diversity reveals that low functional 
 beta-diversity is driven by low functional turnover in European fish assemblages. Global Ecology and Biogeography, 22: 671-681

@@ -21,7 +21,7 @@ be a \code{functional.betapart} object derived from the \code{functional.betapar
 \item{index.family}{ family of dissimilarity indices, partial match of \code{"sorensen"} or \code{"jaccard"}.}
 }
 %NEW
-\details{If \code{x} is a \code{data.frame} then \code{functional.betapart.core.pairwise} is called to compute the distance matrices necessay to compute the different components of the beta diversity. Only the default argument values will be used, while \code{functional.betapart.core.pairwise} integrates options that could be much more efficient, such as internal parallelisation, or different options for the convexhull volume estimation. 
+\details{If \code{x} is a \code{data.frame} then \code{functional.betapart.core.pairwise} is called to compute the distance matrices necessary to compute the different components of the beta diversity. Only the default argument values will be used, while \code{functional.betapart.core.pairwise} integrates options that could be much more efficient, such as internal parallelisation, or different options for the convexhull volume estimation. 
 Note that the the \code{betapart} package now supports external parallel computing for null models. As for internal parallelisation, these functionalities are only availabe in \code{functional.betapart.core} or in \code{functional.betapart.core.pairwise}. In this case, use the \code{functional.betapart} object as \code{x} in this function. See \code{functional.betapart.core} and \code{functional.betepart.core.pairwise} for more details.   
 } 
 

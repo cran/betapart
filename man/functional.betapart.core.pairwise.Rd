@@ -66,7 +66,7 @@ are the most important with this function. As \code{\link{inter_rcdd}} is very f
 Otherwise the parallelisation would not be so efficient. With a low number of communities using internal parallelisation will 
 slow down the function.}
 \item{convhull.opt:}{ Some specific distribution of points could generate errors when computing the convexhull volumes with
-the default qhull options ('Qt'), that is why \code{'QJ'} was prefered as default values (\code{conv1}). Sometimes, it could be 
+the default qhull options ('Qt'), that is why \code{'QJ'} was preferred as default values (\code{conv1}). Sometimes, it could be 
 interesting to use alternative options such as 'Qt' or 'Qs' or to use alternative options to achieve the computation. 
 These alternative options could be used to compute all the convexhull volumes with \code{conv1} or only when an error occurs
 using \code{conv2}. It is thus possible to define \code{conv1} as \code{'Qt'} to use the default 'qhull' options but to prevent error 

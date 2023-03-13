@@ -15,7 +15,7 @@ phylo.betapart.core<-function(x, tree)
     if (any(!is.element(xvals, c(0, 1))))
         stop("The community matrix contains values other than 0 and 1: data should be presence/absence.", call. = TRUE)
 
-    if (class(tree)!="phylo")
+    if (!inherits(tree, "phylo"))
         stop("### invalid tree's format: \"phylo\" format required ###\n\n", call. = TRUE)
 
     if(any(!(colnames(x)%in%tree$tip)))

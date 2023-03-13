@@ -46,24 +46,37 @@ Andrés Baselga
 }
 
 \examples{
-require(vegan)
 
-data(BCI)
-## UTM Coordinates (in metres)
-UTM.EW <- rep(seq(625754, 626654, by=100), each=5)
-UTM.NS <- rep(seq(1011569,  1011969, by=100), len=50)
+# presence/absence tables for longhorn beetles of South and North Europe
+data(ceram.s)
+data(ceram.n)
 
-spat.dist<-dist(data.frame(UTM.EW, UTM.NS))
+# spatial coordinates of territories in South and North Europe
+data(coords.s)
+data(coords.n)
 
-dissim.BCI<-beta.pair.abund(BCI)$beta.bray.bal
+# dissimilarity matrices
+ceram.s.sim<-beta.pair(ceram.s)$beta.sim
+ceram.n.sim<-beta.pair(ceram.n)$beta.sim
 
-plot(spat.dist, dissim.BCI, ylim=c(0,1), xlim=c(0, max(spat.dist)))
+# spatial distances in km
+distgeo.s<-dist(coords.s[,1:2])
+distgeo.n<-dist(coords.n[,1:2])
 
-BCI.decay.exp<-decay.model(dissim.BCI, spat.dist, model.type="exp", perm=100)
+# Negative exponential models for the decay of similarity with spatial distance
+decay.south<-decay.model(y=1-ceram.s.sim, x=distgeo.s, y.type="sim", model.type="exp")
+decay.north<-decay.model(y=1-ceram.n.sim, x=distgeo.n, y.type="sim", model.type="exp")
 
-BCI.decay.pow<-decay.model(dissim.BCI, spat.dist, model.type="pow", perm=100)
+# Plot the decay models
+plot.decay(decay.south, col="red")
+plot.decay(decay.north, col="blue", add=TRUE)
 
-plot.decay(BCI.decay.exp, col=rgb(0,0,0,0.5))
-plot.decay(BCI.decay.exp, col="red", remove.dots=TRUE, add=TRUE)
-plot.decay(BCI.decay.pow, col="blue", remove.dots=TRUE, add=TRUE)
+# Equivalent models for the increase of dissimilarity with spatial distance
+increase.south<-decay.model(y=ceram.s.sim, x=distgeo.s, y.type="dissim", model.type="exp")
+increase.north<-decay.model(y=ceram.n.sim, x=distgeo.n, y.type="dissim", model.type="exp")
+
+# Plot the decay models
+plot.decay(increase.south, col="red")
+plot.decay(increase.north, col="blue", add=TRUE)
+
 }
