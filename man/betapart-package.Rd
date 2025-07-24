@@ -33,7 +33,7 @@ The framework has been extended for functional beta diversity with commands \com
 The package also allows fitting negative exponential, power law or Gompertz distance-decay models for assessing the relationship between assemblage (dis)similarity and spatial (or other) distance. \command{decay.model} fits the nonlinear distance-decay function via the \pkg{minpack.lm} package, \command{plot.decay} plots the distance-decay pattern and the fitted model, \command{boot.coefs.decay} bootstraps the paramaters of the distance-decay model, and \command{zdep} assesses the differences between parameters of two distance-decay models.
 }
 \author{
-Andres Baselga, David Orme, Sebastien Villéger, Julien {De Bortoli}, Fabien Leprieur, Maxime Logez, Sara Martínez-Santalla, Ramiro Martín-Devasa, Carola Gómez-Rodríguez, and Rosa M. Crujeiras
+Andres Baselga, David Orme, Sebastien Villéger, Julien De Bortoli, Fabien Leprieur, Maxime Logez, Sara Martínez-Santalla, Ramiro Martín-Devasa, Carola Gómez-Rodríguez, and Rosa M. Crujeiras
 }
 
 \references{

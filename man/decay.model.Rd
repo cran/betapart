@@ -19,11 +19,11 @@ perm = 100, st.val = c(1, 0))
 }
 
 \arguments{
-\item{y}{ code{dist} object, either containing similarities or dissimilarities between pairs of assemblages.}
-\item{x}{ code{dist} object, containing distances (spatial or other) between pairs of assemblages.}
+\item{y}{ \code{dist} object, either containing similarities or dissimilarities between pairs of assemblages.}
+\item{x}{ \code{dist} object, containing distances (spatial or other) between pairs of assemblages.}
 \item{model.type}{ functional form of the model, either negative exponential, power law, or Gompertz,
 partial match of \code{"exponential"}, \code{"power"}, or \code{"gompertz"}.}
-\item{y.type}{ polarity of the code{dist} object (i.e. 1 means total similarity or total dissimilarity), 
+\item{y.type}{ polarity of the \code{dist} object (i.e. 1 means total similarity or total dissimilarity), 
 partial match of \code{"similarities"} or \code{"dissimilarities"}.}
 \item{perm}{ number of permutations to assess significance.}
 \item{st.val}{ starting values for the nonlinear model.}
@@ -32,8 +32,8 @@ partial match of \code{"similarities"} or \code{"dissimilarities"}.}
 \value{
 The function returns a list with: 
 
-\item{data.y}{ original y data, code{dist} object, either containing similarities or dissimilarities between pairs of assemblages.}
-\item{data.x}{ original x data, code{dist} object, containing distances (spatial or other) between pairs of assemblages.}
+\item{data.y}{ original y data, \code{dist} object, either containing similarities or dissimilarities between pairs of assemblages.}
+\item{data.x}{ original x data, \code{dist} object, containing distances (spatial or other) between pairs of assemblages.}
 \item{model}{ the fitted nonlinear model.}
 \item{model.type}{  functional form of the model, either negative exponential, power law, or Gompertz.}
 \item{y.type}{  similarties or dissimilarities.}

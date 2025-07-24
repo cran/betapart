@@ -2,8 +2,8 @@ Package: betapart
 Type: Package
 Title: Partitioning Beta Diversity into Turnover and Nestedness
         Components
-Version: 1.6
-Date: 2023-03-13
+Version: 1.6.1
+Date: 2025-07-24
 Authors@R: c(
     	person("Andres", "Baselga", email = "andres.baselga@usc.es", role = c("aut", "cre")),
 	person("David", "Orme", role = "aut"),
@@ -24,7 +24,7 @@ Description: Functions to compute pair-wise dissimilarities (distance matrices) 
 License: GPL (>= 2)
 NeedsCompilation: no
 Maintainer: Andres Baselga <andres.baselga@usc.es>
-Packaged: 2023-03-13 10:17:06 UTC; andre
+Packaged: 2025-07-24 11:55:21 UTC; andresbaselga
 Author: Andres Baselga [aut, cre],
   David Orme [aut],
   Sebastien Villeger [aut],
@@ -37,4 +37,4 @@ Author: Andres Baselga [aut, cre],
   Rosa M. Crujeiras [aut],
   Renato Henriques-Silva [ctb]
 Repository: CRAN
-Date/Publication: 2023-03-13 17:10:15 UTC
+Date/Publication: 2025-07-24 15:20:15 UTC

@@ -31,5 +31,5 @@ mat2 <- matrix(runif(30), 10)
 inter_geom(mat1, mat2)}
 }
 \seealso{
-\code{\link{inter_rcdd}}, \code{\link{intersectn}}
+\code{\link{inter_rcdd}}, \code{\link[geometry]{intersectn}}
 }

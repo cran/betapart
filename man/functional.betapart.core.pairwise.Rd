@@ -27,7 +27,7 @@ computation of the convexhull volumes should be returned (\code{TRUE}) or not (\
 See \code{\link{beta.para.control}} and the \code{Details} section.}
 
 \item{convhull.opt}{A list of two named vectors of character \code{conv1} and \code{conv2} defining the options that 
-will be passed to the \code{\link{convhulln}} function to compute the convexhull volumes (\url{http://www.qhull.org/html/qh-optq.htm}).
+will be passed to the \code{\link[geometry]{convhulln}} function to compute the convexhull volumes (\url{http://www.qhull.org/html/qh-optq.htm}).
  \code{conv1} sets the default option that will be passed tp \code{convhulln} (\code{'QJ'} by default instead of \code{'Qt'}), 
  while \code{conv2} set the options if \code{convhulln} return an error with options set by \code{conv1}. 
  See \code{Details} and the examples.}
@@ -35,7 +35,7 @@ will be passed to the \code{\link{convhulln}} function to compute the convexhull
 \item{progress}{A logical indicating if a progress bar should be displayed (\code{TRUE}) or not (by default) (\code{FALSE}).}
 }
 \value{
-{The function returns an object of class \code{betapart} with the following elements:
+The function returns an object of class \code{betapart} with the following elements:
   \describe{
   \item{sumFRi}{ The sum of the functional richness values of all sites}
   \item{FRt}{ The total functional richness in the dataset \code{NA}. Kept for compatibility with \code{functional.betapart.core}}
@@ -46,34 +46,36 @@ will be passed to the \code{\link{convhulln}} function to compute the convexhull
   \item{max.not.shared}{ A matrix containing the total maximum functional richness not shared between pairs of sites: max(b,c)}
   \item{min.not.shared}{ A matrix containing the total minimum functional richness not shared between pairs of sites: min(b,c)}
   \item{details}{ \code{NA} if \code{return.details = FALSE}. Otherwise a list of two elements: 
-  \itemize{
-  \item{\code{$FRi}}{ a data frame with two columns, the \code{FRi} values and the qhull options used to compute them (\code{qhull.opt}).}
-  \item{\code{$Intersection}}{ a data frame with the pairs of communities (\code{Comms}), 
-  the function used to compute the volume of their intersections (\code{Inter}) and the qhull options used (\code{qhull.opt})}
+  \describe{
+  \item{\code{$FRi}}{A data frame with two columns: the \code{FRi} values and the qhull options used to compute them (\code{qhull.opt}).}
+  \item{\code{$Intersection}}{A data frame with the pairs of communities (\code{Comms}), 
+  the function used to compute the volume of their intersections (\code{Inter}), and the qhull options used (\code{qhull.opt}).}
   }
   }
   }
 }
-}
+
 \description{
 Computes the basic quantities needed for computing the pairwise functional dissimilarity matrices. 
 This function is similar to functional.betapart.core with multi=FALSE but it provides more options for computing convex hulls shaping each assemblage (through option passed to qhull algorithm in 'geometry::convhulln()' as well as their intersections (computed based on library 'geometry' whenever possible, else with 'rcdd' as in functional.betapart.core.
 }
+
 \details{
-{\itemize{\item{opt.parallel:}{ Among the four options (see \code{\link{beta.para.control}}),
-the number of cores (\code{nc}) and the number of convexhull volumes computed by each core at each iteration {\code{size}}
-are the most important with this function. As \code{\link{inter_rcdd}} is very fast, it is necessary to set a large value (>100) for \code{size}.
-Otherwise the parallelisation would not be so efficient. With a low number of communities using internal parallelisation will 
-slow down the function.}
-\item{convhull.opt:}{ Some specific distribution of points could generate errors when computing the convexhull volumes with
-the default qhull options ('Qt'), that is why \code{'QJ'} was preferred as default values (\code{conv1}). Sometimes, it could be 
-interesting to use alternative options such as 'Qt' or 'Qs' or to use alternative options to achieve the computation. 
-These alternative options could be used to compute all the convexhull volumes with \code{conv1} or only when an error occurs
-using \code{conv2}. It is thus possible to define \code{conv1} as \code{'Qt'} to use the default 'qhull' options but to prevent error 
-by setting \code{'QJ'} to the \code{conv2} argument.}
+\describe{
+  \item{opt.parallel}{Among the four options (see \code{\link{beta.para.control}}),
+  the number of cores (\code{nc}) and the number of convexhull volumes computed by each core at each iteration (\code{size})
+  are the most important with this function. As \code{\link{inter_rcdd}} is very fast, it is necessary to set a large value (>100) for \code{size}.
+  Otherwise the parallelisation would not be so efficient. With a low number of communities, using internal parallelisation will 
+  slow down the function.}
+
+  \item{convhull.opt}{Some specific distributions of points could generate errors when computing the convexhull volumes with
+  the default qhull options ('Qt'), which is why \code{'QJ'} was preferred as the default value (\code{conv1}). Sometimes, it could be 
+  interesting to use alternative options such as 'Qt' or 'Qs' to achieve the computation. 
+  These alternative options could be used to compute all the convexhull volumes with \code{conv1}, or only when an error occurs
+  using \code{conv2}. It is thus possible to define \code{conv1} as \code{'Qt'} to use the default 'qhull' options, but to prevent errors by setting \code{'QJ'} to the \code{conv2} argument.}
 }
 }
-}
+
 \examples{
 ##### 4 communities in a 2D functional space (convex hulls are rectangles)
 traits.test <- cbind(c(1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5), 

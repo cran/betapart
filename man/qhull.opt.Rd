@@ -30,5 +30,5 @@ qhull.opt(conv1 = 'QJ')
 qhull.opt(conv1 = "Qt", conv2 = 'QJ')}
 }
 \seealso{
-\code{\link{inter_rcdd}}, \code{\link{inter_geom}}, \code{\link{convhulln}}.
+\code{\link{inter_rcdd}}, \code{\link{inter_geom}}, \code{\link[geometry]{convhulln}}.
 }

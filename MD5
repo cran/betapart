@@ -1,4 +1,4 @@
-5b1fbb49a9312e4a04ee2f8cf2a9041f *DESCRIPTION
+ebc7cfb82533bc9493a4c4ac59382c3e *DESCRIPTION
 6c2816f56089ab8e0e977da376ee060f *NAMESPACE
 98790d9d0e5d8332dda338ebe4ceee4f *NEWS.md
 b108398ce7d4336da8ccf073435d13b5 *R/beta-multi-abund.R
@@ -27,13 +27,13 @@ ca52efca3174bae2161dafbf7fb5eed0 *data/coords.s.txt
 759fb84f6941aeef7c3791d2555a1679 *man/bbsData.Rd
 f0b00589d3b699cdf8c0800520978704 *man/beta.multi.Rd
 f96a11bcf3b960761071e74c5e838fb6 *man/beta.multi.abund.Rd
-8d842d3d51859d8474ed6c5856628a52 *man/beta.pair.Rd
+dfcbb22735bc98265f7247fc6a45beb6 *man/beta.pair.Rd
 84f29f34969ae698188c77f74c0f2c10 *man/beta.pair.abund.Rd
 bcfa7f67133b3ad51ad3528186b94691 *man/beta.para.control.Rd
 6588fa5c029bb64aa49e377c046d6266 *man/beta.sample.Rd
 fcc55bbb3c86db6a9d3d6ff990c0b47a *man/beta.sample.abund.Rd
 2a63b3d456bcf242ea4dc0c7f64f1622 *man/beta.temp.Rd
-4cd13bea6489e4eaa8ace8734d2983d6 *man/betapart-package.Rd
+ef8361e686ad7194613e0ea5c1b0aa81 *man/betapart-package.Rd
 775b2574cba4ecf6ac04cf38991be967 *man/betapart.core.Rd
 11ab23de43776679bd87a5826281a526 *man/betapart.core.abund.Rd
 9f86c87f31b74b7d5bec3523942a0320 *man/betatest.Rd
@@ -43,12 +43,12 @@ dc3f2a3bfbf37172a681fe7f6a766809 *man/ceram.n.Rd
 db5c864ecec4cd645eeea5e40b4fbf11 *man/ceram.s.Rd
 6bcee8d8f60bf2ce115dcd301efeba84 *man/coords.n.Rd
 1bcba8f95b1d39912e4c39cf24f513ae *man/coords.s.Rd
-59547b1f0a5e62ebc53c84238d1afc0a *man/decay.model.Rd
+9b452605c01eaad76a03914ee7206768 *man/decay.model.Rd
 ff28542a2d0afa4888143fc1cb33c98e *man/functional.beta.multi.Rd
 f413ce879030d7a095f9159042ef0fd7 *man/functional.beta.pair.Rd
-f9d7c370949662a159761bcbcc57fe86 *man/functional.betapart.core.Rd
-4dff4574c2fb1ed4f9c3de7440f01f10 *man/functional.betapart.core.pairwise.Rd
-45b808a0507639de9768d9672c6841c9 *man/inter_geom.Rd
+5feb0cfd9cfb0f7f104598c30ee424ef *man/functional.betapart.core.Rd
+063442fc378b81b1e826a065238247ae *man/functional.betapart.core.pairwise.Rd
+fbf4f91c0f30c9281ebc2804aa3a5b70 *man/inter_geom.Rd
 ab1ad1792dd881895007c89a5f732094 *man/inter_geom_coord.Rd
 b98e1909150ffa66591d11c55282af16 *man/inter_rcdd.Rd
 6ab9c17d68e13af32be307617c51cad4 *man/inter_rcdd_coord.Rd
@@ -56,5 +56,5 @@ b411bd8da1e01172f5ec9fc3d114a258 *man/phylo.beta.multi.rd
 ae12cc9c5b1e1f62b2e92235004a7896 *man/phylo.beta.pair.rd
 8de28dc9b9b35a55a237866dae236eca *man/phylo.betapart.core.rd
 e00d3565da4f77d9b307970339e46afa *man/plot.decay.Rd
-46d777b890389e2a8255185778bf9f5a *man/qhull.opt.Rd
+11cac5a1a8b4a64259c554a4da6228c2 *man/qhull.opt.Rd
 fbfc34f593bfae1288ab7c6eae4d8127 *man/zdep.Rd
